@@ -35,6 +35,20 @@ Nginx upstream portu `.env` içindeki `PORT` ile aynı olmalı, örn. `proxy_pas
 - [ ] Eski URL 301: `/hakkimda`, `/projeler`, `/bloglar`
 - [ ] `public/og-image.webp` paylaşım önizlemesinde görünüyor mu
 
+## Performans
+
+```bash
+npm run optimize:fonts   # woff2: brew install woff2
+npm run optimize:images  # cwebp: brew install webp
+npm run build
+npm run perf:lighthouse           # mobil rapor → lighthouse-mobile.html
+npm run perf:lighthouse:desktop   # masaüstü rapor
+```
+
+Canlıda statik cache için Nginx snippet: [`deploy/nginx-static-cache.conf`](deploy/nginx-static-cache.conf) — `try_files` / `@proxy` adını kendi `kaantanis-v2.conf` upstream bloğuna göre düzenleyin.
+
+Ana sayfa hibrit prerender (`index.astro`); `/api/contact` SSR kalır.
+
 ## Görseller (WebP)
 
 Yeni jpg/png eklediğinde:

@@ -25,12 +25,22 @@ function heroSafeScene() {
         if (!heroSection) return;
 
         const playHeroAnimation = () => {
+            gsap.set(['#designer_image', '#developer_image'], { opacity: 1 });
+
             gsap.from('#designer', { duration: 1, x: -100, opacity: 0, ease: 'back' });
             gsap.from('#developer', { duration: 1, x: 100, opacity: 0, ease: 'back' });
-            gsap.from('#designer_image', { duration: 1, y: -100, opacity: 0, ease: 'back' });
-            gsap.from('#developer_image', { duration: 1, y: 100, opacity: 0, ease: 'back' });
+            gsap.from('#designer_image', { duration: 1, y: -100, ease: 'back' });
             gsap.from('#hero_title_1', { duration: 0.5, opacity: 0, delay: 0.2 });
             gsap.from('#hero_title_2', { duration: 0.5, opacity: 0, delay: 0.5 });
+
+            const runDeveloperImage = () => {
+                gsap.from('#developer_image', { duration: 1, y: 100, ease: 'back' });
+            };
+            if (document.readyState === 'complete') {
+                requestAnimationFrame(() => requestAnimationFrame(runDeveloperImage));
+            } else {
+                window.addEventListener('load', () => requestAnimationFrame(runDeveloperImage), { once: true });
+            }
         };
 
         if ('IntersectionObserver' in window) {
@@ -312,7 +322,7 @@ export function initAnimations() {
     if (prefersReducedMotion()) {
         document
             .querySelectorAll<HTMLElement>(
-                '[data-reveal], .slab, [data-bubble], .lab-footer, .lab-footer-shell',
+                '[data-reveal], .slab, [data-bubble], .lab-footer, .lab-footer-shell, #designer_image, #developer_image',
             )
             .forEach((el) => {
                 el.style.opacity = '1';
@@ -330,6 +340,4 @@ export function initAnimations() {
     requestAnimationFrame(() => ScrollTrigger.refresh());
 }
 
-initAnimations();
 document.addEventListener('astro:before-swap', clearScenes);
-document.addEventListener('astro:page-load', initAnimations);

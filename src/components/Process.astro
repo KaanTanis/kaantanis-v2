@@ -32,7 +32,13 @@ import { steps } from '../data/site';
 
                     <div class="slab-body">
                         <div class="slab-image-frame" data-slab-frame>
-                            <img src={step.image} alt={`Kaan Tanış - ${step.title}`} loading="lazy" />
+                            <img
+                                src={step.image}
+                                alt={`Kaan Tanış - ${step.title}`}
+                                loading="lazy"
+                                decoding="async"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
                             <span class="slab-frame-meta">FRAME {step.n}</span>
                             <span class="slab-frame-meta slab-frame-meta--right">REC ●</span>
                         </div>
@@ -141,7 +147,7 @@ import { steps } from '../data/site';
     .slab-numeral {
         display: block;
         font-size: clamp(7rem, 17vw, 22rem);
-        font-weight: 900;
+        font-weight: 800;
         line-height: 0.82;
         letter-spacing: -0.06em;
         color: transparent;

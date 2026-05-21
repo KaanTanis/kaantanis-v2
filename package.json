@@ -10,7 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "optimize:images": "node scripts/optimize-images.mjs"
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "optimize:fonts": "node scripts/convert-fonts.mjs",
+    "perf:lighthouse": "lighthouse https://kaantanis.com --only-categories=performance --form-factor=mobile --screenEmulation.mobile --output=html --output-path=./lighthouse-mobile.html",
+    "perf:lighthouse:desktop": "lighthouse https://kaantanis.com --only-categories=performance --preset=desktop --output=html --output-path=./lighthouse-desktop.html"
   },
   "dependencies": {
     "@astrojs/node": "^10.1.1",

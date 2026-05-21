@@ -159,7 +159,7 @@ b {
 
 /* Bold typographic scale */
 .display-hero {
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 0.88;
 }
@@ -265,7 +265,7 @@ b {
     border-radius: var(--radius-full);
     border: 1px solid var(--border);
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--fg-muted);
     background: var(--surface);
     cursor: pointer;
@@ -329,6 +329,15 @@ b {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+/* Below-the-fold sections — defer layout/paint until near viewport */
+#about,
+#process,
+#contact,
+.slab-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 520px;
 }
 
 /* Mobile dock spacing — prevents content underflow */

@@ -95,26 +95,12 @@ const jsonLd = {
         <meta name="twitter:image" content={ogImage} />
 
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
-        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-Medium.ttf" crossorigin />
-        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-ExtraBold.ttf" crossorigin />
+        <link rel="preload" as="image" href="/assets/img/designer-w400.webp" media="(max-width: 640px)" fetchpriority="high" />
+        <link rel="preload" as="image" href="/assets/img/designer-w800.webp" media="(min-width: 641px)" fetchpriority="high" />
+        <link rel="preload" as="font" type="font/woff2" href="/fonts/gilroy/Gilroy-Medium.woff2" crossorigin />
+        <link rel="preload" as="font" type="font/woff2" href="/fonts/gilroy/Gilroy-ExtraBold.woff2" crossorigin />
 
         <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-
-        {
-            import.meta.env.PROD && (
-                <>
-                    <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}></script>
-                    <script is:inline define:vars={{ gaId: site.gaId }}>
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag() {
-                            dataLayer.push(arguments);
-                        }
-                        gtag('js', new Date());
-                        gtag('config', gaId);
-                    </script>
-                </>
-            )
-        }
 
         <script is:inline>
             (function () {
@@ -204,6 +190,10 @@ const jsonLd = {
     </head>
     <body class="overflow-x-hidden antialiased">
         <slot />
+        <script>
+            import { scheduleAnalytics } from '../scripts/analytics.ts';
+            scheduleAnalytics();
+        </script>
     </body>
 
 </html>

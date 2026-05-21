@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import MobileDock from '../components/MobileDock.astro';
@@ -24,6 +26,8 @@ import SiteModals from '../components/SiteModals.astro';
 </BaseLayout>
 
 <script>
-    import '../scripts/animations.ts';
     import '../scripts/nav-active.ts';
+</script>
+<script>
+    import '../scripts/load-animations.ts';
 </script>

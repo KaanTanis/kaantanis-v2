@@ -19,6 +19,8 @@ import { hero } from '../data/site';
                 <div>
                     <img
                         src={hero.image}
+                        srcset={hero.imageSrcset}
+                        sizes={hero.imageSizes}
                         id="designer_image"
                         width="600"
                         height="300"
@@ -26,6 +28,7 @@ import { hero } from '../data/site';
                         class="aspect-[5/2] w-full rounded-full shadow object-cover"
                         fetchpriority="high"
                         loading="eager"
+                        decoding="async"
                     />
                 </div>
             </div>
@@ -33,12 +36,16 @@ import { hero } from '../data/site';
                 <div>
                     <img
                         src={hero.image2}
+                        srcset={hero.image2Srcset}
+                        sizes={hero.image2Sizes}
                         id="developer_image"
                         width="600"
                         height="300"
                         alt={`Kaan Tanış - ${hero.title2}`}
                         class="aspect-[5/2] w-full rounded-full shadow object-cover"
-                        loading="eager"
+                        loading="lazy"
+                        fetchpriority="low"
+                        decoding="async"
                     />
                 </div>
                 <div class="self-center justify-self-end">

@@ -9,6 +9,17 @@ export default defineConfig({
     adapter: node({ mode: 'standalone' }),
     vite: {
         plugins: [tailwindcss()],
+        build: {
+            rollupOptions: {
+                output: {
+                    manualChunks(id) {
+                        if (id.includes('node_modules/gsap')) {
+                            return 'gsap';
+                        }
+                    },
+                },
+            },
+        },
     },
     server: {
         port: Number(process.env.PORT) || 3000,

@@ -161,7 +161,7 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
         margin: 0;
         font-size: 0.68rem;
         line-height: 1.35;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--fg-muted);
         white-space: nowrap;
     }
@@ -271,6 +271,7 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
         accept?.addEventListener('click', () => {
             localStorage.setItem('cookie-consent', '1');
             banner?.classList.add('hidden');
+            import('../scripts/analytics.ts').then((m) => m.loadAnalytics());
         });
     }
 
