@@ -2,133 +2,274 @@
 import { steps } from '../data/site';
 ---
 
-<section id="process" class="relative scroll-mt-20 py-24 md:py-32 overflow-hidden">
-    <div class="process-grid-noise" aria-hidden="true"></div>
-    <div class="container-site relative z-10">
-        <header class="max-w-3xl">
+<section id="process" class="process-lab scroll-mt-20">
+    <div class="process-orb process-orb-a" aria-hidden="true"></div>
+    <div class="process-orb process-orb-b" aria-hidden="true"></div>
+    <div class="process-mesh" aria-hidden="true"></div>
+    <div class="container relative z-10">
+        <header class="process-head">
             <span class="eyebrow reveal" data-reveal>Süreç</span>
-            <h2 class="display-section reveal mt-4 text-4xl sm:text-5xl md:text-6xl" data-reveal data-reveal-delay="0.05">
+            <h2 class="display-section reveal mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl" data-reveal data-reveal-delay="0.05">
                 Linear değil, <em>sahne sahne</em>.
             </h2>
             <p class="reveal mt-5 text-base font-medium text-[var(--fg-muted)] sm:text-lg" data-reveal data-reveal-delay="0.1">
-                Her adım bir ekran değil; bir <strong>deneyim katmanı</strong>. Scroll ettikçe süreç akıyor.
+                Her adım bir ekran değil; bir <strong>deneyim katmanı</strong>. Scroll, deneyimi adım adım dönüştürür.
             </p>
         </header>
+    </div>
 
-        <div class="process-rail mt-14 md:mt-20">
-            {
-                steps.map((step, index) => (
-                    <article class="process-item reveal" data-reveal data-step={index}>
-                        <div class="process-item-media">
-                            <img src={step.image} width="560" height="420" alt={`Kaan Tanış - ${step.title}`} loading="lazy" />
-                            <span class="process-step-index">{step.n}</span>
-                        </div>
-                        <div class="process-item-content">
-                            <p class="process-item-kicker">{step.kicker}</p>
-                            <h3 class="process-item-title">{step.title}</h3>
-                            <p class="rich process-item-text" set:html={step.content} />
-                        </div>
-                    </article>
-                ))
-            }
+    <div class="process-track">
+        <div class="container process-stage">
+            <ol class="process-progress" aria-label="Süreç adımları">
+                {
+                    steps.map((step, index) => (
+                        <li class="process-progress-item" data-progress={index}>
+                            <span>{step.n}</span>
+                        </li>
+                    ))
+                }
+            </ol>
+
+            <div class="process-scene-stack">
+                {
+                    steps.map((step, index) => (
+                        <article class="process-scene" data-scene={index}>
+                            <div class="scene-grid">
+                                <figure class="scene-media">
+                                    <img src={step.image} width="560" height="420" alt={`Kaan Tanış - ${step.title}`} loading="lazy" />
+                                    <span class="scene-index">{step.n}</span>
+                                </figure>
+                                <div class="scene-copy">
+                                    <p class="scene-kicker">{step.kicker}</p>
+                                    <h3 class="scene-title">{step.title}</h3>
+                                    <p class="rich scene-text" set:html={step.content} />
+                                </div>
+                            </div>
+                        </article>
+                    ))
+                }
+            </div>
         </div>
     </div>
 </section>
 
 <style>
-    .process-grid-noise {
+    .process-lab {
+        position: relative;
+        padding-top: 6rem;
+        padding-bottom: 2rem;
+        overflow: clip;
+    }
+
+    .process-orb {
+        position: absolute;
+        border-radius: 9999px;
+        pointer-events: none;
+        filter: blur(70px);
+        opacity: 0.25;
+    }
+
+    .process-orb-a {
+        width: 26rem;
+        height: 26rem;
+        top: 8%;
+        left: -9rem;
+        background: color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+
+    .process-orb-b {
+        width: 24rem;
+        height: 24rem;
+        bottom: 6%;
+        right: -10rem;
+        background: color-mix(in srgb, var(--fg) 20%, transparent);
+    }
+
+    .process-mesh {
         position: absolute;
         inset: 0;
         background-image:
             linear-gradient(to right, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
             linear-gradient(to bottom, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px);
-        background-size: 52px 52px;
-        opacity: 0.18;
-        mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+        background-size: 46px 46px;
+        opacity: 0.12;
+        mask-image: radial-gradient(ellipse at center, black 35%, transparent 82%);
         pointer-events: none;
     }
 
-    .process-rail {
+    .process-head {
+        max-width: 60rem;
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .process-track {
+        margin-top: 2.5rem;
+        height: 320vh;
+    }
+
+    .process-stage {
+        position: sticky;
+        top: 5.25rem;
+        min-height: calc(100vh - 7rem);
         display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
         gap: 2rem;
     }
 
-    .process-item {
+    .process-progress {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.9rem;
+        align-self: center;
+    }
+
+    .process-progress-item {
+        width: 2.1rem;
+        height: 2.1rem;
+        border-radius: 9999px;
+        border: 1px solid var(--border);
+        display: grid;
+        place-items: center;
+        font-size: 0.66rem;
+        letter-spacing: 0.12em;
+        font-weight: 800;
+        color: var(--fg-subtle);
+        background: color-mix(in srgb, var(--surface) 85%, transparent);
+        transition:
+            color 0.25s ease,
+            border-color 0.25s ease,
+            transform 0.25s ease,
+            background-color 0.25s ease;
+    }
+
+    .process-progress-item.is-active {
+        color: var(--accent-fg);
+        border-color: var(--accent);
+        background: var(--accent);
+        transform: scale(1.06);
+    }
+
+    .process-scene-stack {
+        position: relative;
+        min-height: min(36rem, calc(100vh - 9rem));
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        background: color-mix(in srgb, var(--surface) 86%, transparent);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(14px);
+        overflow: clip;
+    }
+
+    .process-scene {
+        position: absolute;
+        inset: 0;
+        padding: 1.4rem;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(18px) scale(0.985);
+    }
+
+    .process-scene:first-child {
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+    }
+
+    .scene-grid {
+        height: 100%;
         display: grid;
         gap: 1rem;
-        border: 1px solid var(--border);
-        border-radius: 1.4rem;
-        padding: 1rem;
-        background: color-mix(in srgb, var(--surface) 85%, transparent);
-        backdrop-filter: blur(14px);
-        box-shadow: var(--shadow-sm);
+        grid-template-columns: minmax(0, 1fr);
     }
 
-    @media (min-width: 900px) {
-        .process-item {
-            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-            align-items: center;
+    @media (min-width: 980px) {
+        .scene-grid {
             gap: 1.5rem;
-            padding: 1.25rem;
-        }
-
-        .process-item:nth-child(even) .process-item-media {
-            order: 2;
+            grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+            align-items: center;
         }
     }
 
-    .process-item-media {
+    .scene-media {
+        margin: 0;
         position: relative;
         overflow: hidden;
         border-radius: 1rem;
+        border: 1px solid var(--border);
+        height: 100%;
+        min-height: 15rem;
     }
 
-    .process-item-media img {
+    .scene-media img {
         width: 100%;
+        height: 100%;
         aspect-ratio: 16 / 10;
         object-fit: cover;
         display: block;
     }
 
-    .process-step-index {
+    .scene-index {
         position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
+        right: 0.85rem;
+        top: 0.85rem;
         font-size: 0.75rem;
         font-weight: 800;
-        letter-spacing: 0.14em;
+        letter-spacing: 0.16em;
         border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-        background: color-mix(in srgb, var(--surface) 70%, transparent);
+        background: color-mix(in srgb, var(--surface) 74%, transparent);
         padding: 0.4rem 0.65rem;
         border-radius: 9999px;
     }
 
-    .process-item-content {
-        padding: 0.35rem 0.25rem;
+    .scene-copy {
+        padding: 0.2rem 0.25rem;
+        align-self: center;
     }
 
-    .process-item-kicker {
+    .scene-kicker {
         margin: 0 0 0.45rem 0;
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         letter-spacing: 0.16em;
         font-weight: 800;
         text-transform: uppercase;
         color: var(--fg-subtle);
     }
 
-    .process-item-title {
+    .scene-title {
         margin: 0;
-        font-size: clamp(1.5rem, 2.8vw, 2.35rem);
-        line-height: 1.04;
+        font-size: clamp(1.55rem, 2.9vw, 2.5rem);
+        line-height: 1.02;
         letter-spacing: -0.02em;
         font-weight: 800;
     }
 
-    .process-item-text {
+    .scene-text {
         margin-top: 0.75rem;
-        font-size: 0.97rem;
-        line-height: 1.7;
+        font-size: 0.98rem;
+        line-height: 1.72;
         color: var(--fg-muted);
+    }
+
+    @media (max-width: 980px) {
+        .process-track {
+            height: 360vh;
+        }
+
+        .process-stage {
+            top: 4.75rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            min-height: calc(100vh - 6.5rem);
+        }
+
+        .process-progress {
+            grid-auto-flow: column;
+            justify-content: center;
+        }
     }
 
     em {

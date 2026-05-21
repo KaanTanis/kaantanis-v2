@@ -18,24 +18,61 @@ function runScene(sceneId: string, runner: SceneRunner) {
 
 function heroSafeScene() {
     runScene('hero', () => {
-        const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-        tl.from('#hero_title_1', { opacity: 0, duration: 0.5, delay: 0.15 })
-            .from('#hero_title_2', { opacity: 0, duration: 0.5 }, '-=0.2')
-            .from('#designer', { x: -100, opacity: 0, duration: 1 }, 0)
-            .from('#developer', { x: 100, opacity: 0, duration: 1 }, 0.1)
-            .from('#designer_image', { y: -100, opacity: 0, duration: 1 }, 0)
-            .from('#developer_image', { y: 100, opacity: 0, duration: 1 }, 0.1)
-            .from('.hero-link', { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.45)
-            .from('#hero_scroll_cue', { opacity: 0, duration: 0.35 }, 0.7);
+        const heroSection = document.querySelector('#hero');
+        if (!heroSection) return;
 
-        const cueTween = gsap.to('#hero_scroll_cue', {
-            y: 6,
-            duration: 1.15,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-        });
-        sceneCleanups.push(() => cueTween.kill());
+        const playHeroAnimation = () => {
+            // Original site parity (speed + effect)
+            gsap.from('#designer', {
+                duration: 1,
+                x: -100,
+                opacity: 0,
+                ease: 'back',
+            });
+            gsap.from('#developer', {
+                duration: 1,
+                x: 100,
+                opacity: 0,
+                ease: 'back',
+            });
+            gsap.from('#designer_image', {
+                duration: 1,
+                y: -100,
+                opacity: 0,
+                ease: 'back',
+            });
+            gsap.from('#developer_image', {
+                duration: 1,
+                y: 100,
+                opacity: 0,
+                ease: 'back',
+            });
+            gsap.from('#hero_title_1', {
+                duration: 0.5,
+                opacity: 0,
+                delay: 0.2,
+            });
+            gsap.from('#hero_title_2', {
+                duration: 0.5,
+                opacity: 0,
+                delay: 0.5,
+            });
+        };
+
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        playHeroAnimation();
+                        observer.disconnect();
+                    }
+                });
+            });
+            observer.observe(heroSection);
+            sceneCleanups.push(() => observer.disconnect());
+        } else {
+            playHeroAnimation();
+        }
     });
 }
 
@@ -90,30 +127,91 @@ function aboutScene() {
 
 function processScene() {
     runScene('process', () => {
-        const items = gsap.utils.toArray<HTMLElement>('.process-item');
-        items.forEach((item, index) => {
-            gsap.from(item, {
-                opacity: 0,
-                y: 48,
-                x: index % 2 === 0 ? -24 : 24,
-                duration: 0.8,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top 85%',
-                },
-            });
+        const scenes = gsap.utils.toArray<HTMLElement>('.process-scene');
+        const track = document.querySelector('.process-track');
+        const stage = document.querySelector('.process-stage');
+        const progressItems = gsap.utils.toArray<HTMLElement>('.process-progress-item');
 
-            gsap.to(item, {
-                x: index % 2 === 0 ? 8 : -8,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true,
+        if (!track || !stage || scenes.length === 0) return;
+
+        gsap.set(scenes, { autoAlpha: 0, y: 18, scale: 0.985 });
+        gsap.set(scenes[0], { autoAlpha: 1, y: 0, scale: 1 });
+        progressItems[0]?.classList.add('is-active');
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: track,
+                start: 'top top+=84',
+                end: 'bottom bottom',
+                pin: stage,
+                scrub: 1,
+                invalidateOnRefresh: true,
+                onUpdate: (self) => {
+                    const idx = Math.min(scenes.length - 1, Math.floor(self.progress * scenes.length * 0.999));
+                    progressItems.forEach((item, i) => {
+                        item.classList.toggle('is-active', i <= idx);
+                    });
                 },
-            });
+            },
+        });
+
+        for (let i = 1; i < scenes.length; i += 1) {
+            tl.to(
+                scenes[i - 1],
+                {
+                    autoAlpha: 0,
+                    y: -16,
+                    scale: 0.986,
+                    duration: 0.55,
+                    ease: 'power2.out',
+                },
+                i - 0.1,
+            ).to(
+                scenes[i],
+                {
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.55,
+                    ease: 'power2.out',
+                },
+                i - 0.03,
+            );
+        }
+
+        scenes.forEach((scene, index) => {
+            const media = scene.querySelector<HTMLElement>('.scene-media img');
+            const copy = scene.querySelector<HTMLElement>('.scene-copy');
+
+            if (media) {
+                gsap.fromTo(
+                    media,
+                    { scale: 1.08 },
+                    {
+                        scale: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: track,
+                            start: `${index * 33}% top`,
+                            end: `${(index + 1) * 33}% top`,
+                            scrub: true,
+                        },
+                    },
+                );
+            }
+
+            if (copy) {
+                gsap.from(copy, {
+                    opacity: 0,
+                    y: 18,
+                    duration: 0.55,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: scene,
+                        start: 'top 75%',
+                    },
+                });
+            }
         });
     });
 }
