@@ -36,10 +36,29 @@
         document.querySelector(`.theme-icon-${id}`)?.classList.remove('hidden');
     }
 
-    function applyTheme(theme: Theme) {
+    function markUserPickedTheme() {
+        try {
+            const raw = localStorage.getItem('kaan-visit-state');
+            const state = raw
+                ? (JSON.parse(raw) as {
+                      visits?: number[];
+                      surpriseShown?: boolean;
+                      userPickedTheme?: boolean;
+                      pendingSurprise?: boolean;
+                  })
+                : { visits: [], surpriseShown: false, userPickedTheme: false, pendingSurprise: false };
+            state.userPickedTheme = true;
+            state.pendingSurprise = false;
+            localStorage.setItem('kaan-visit-state', JSON.stringify(state));
+            localStorage.removeItem('kaan-theme-user-picked');
+        } catch {}
+    }
+
+    function applyTheme(theme: Theme, fromUser = false) {
         document.documentElement.setAttribute('data-theme', theme);
         try {
             localStorage.setItem('theme', theme);
+            if (fromUser) markUserPickedTheme();
         } catch {}
         syncIcons(theme);
     }
@@ -55,7 +74,7 @@
         btn.addEventListener('click', () => {
             const active = (document.documentElement.getAttribute('data-theme') as Theme) ?? 'light';
             const idx = themes.indexOf(active);
-            applyTheme(themes[(idx + 1) % themes.length]);
+            applyTheme(themes[(idx + 1) % themes.length], true);
         });
     }
 

@@ -12,6 +12,20 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
     </div>
 </dialog>
 
+<dialog id="surprise-modal" class="site-modal lab-modal surprise-modal">
+    <div class="site-modal-box surprise-modal-box">
+        <p class="surprise-emoji" aria-hidden="true">⚡🫶🌆</p>
+        <h2 class="surprise-title">Tekrar hoş geldin!</h2>
+        <p class="surprise-text">
+            24 saat içinde ikinci kez uğradığın için sana özel <strong>cyberpunk</strong> modunu açtım 💜✨
+            Umarım küçük sürpriz hoşuna gider — kaydırmaya devam et, seni bekliyorum 🚀
+        </p>
+        <form method="dialog" class="mt-6">
+            <button type="submit" class="btn btn-primary surprise-btn">Harika, devam! 🫶</button>
+        </form>
+    </div>
+</dialog>
+
 <dialog id="cookie-modal" class="site-modal lab-modal">
     <div class="site-modal-box prose-modal">
         <h2 class="text-xl font-bold">Çerezler</h2>
@@ -39,13 +53,21 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
 
 <style>
     .site-modal {
-        margin: auto;
-        max-width: 42rem;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        max-width: min(42rem, calc(100vw - 2rem));
         width: calc(100% - 2rem);
         border: none;
         border-radius: var(--radius-lg);
         padding: 0;
         background: transparent;
+        overflow: visible;
+    }
+    .site-modal[open] {
+        display: block;
     }
     .site-modal::backdrop {
         background: rgb(0 0 0 / 0.55);
@@ -66,10 +88,88 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
         box-shadow: var(--shadow-md);
         backdrop-filter: blur(14px);
     }
+
+    .surprise-modal {
+        width: min(26rem, calc(100vw - 2rem));
+        max-width: min(26rem, calc(100vw - 2rem));
+    }
+    .surprise-modal-box {
+        text-align: center;
+        width: 100%;
+        margin-inline: auto;
+        border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+        box-shadow: var(--shadow-lg), 0 0 40px color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+    .surprise-emoji {
+        font-size: 2.5rem;
+        line-height: 1;
+        margin: 0 0 0.75rem;
+        letter-spacing: 0.2em;
+    }
+    .surprise-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin: 0 0 0.75rem;
+        letter-spacing: -0.02em;
+    }
+    .surprise-text {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.65;
+        color: var(--fg-muted);
+    }
+    .surprise-text strong {
+        color: var(--accent);
+    }
+    .surprise-btn {
+        width: 100%;
+        justify-content: center;
+    }
 </style>
 
 <script>
+    type VisitState = {
+        visits: number[];
+        surpriseShown: boolean;
+        userPickedTheme: boolean;
+        pendingSurprise: boolean;
+    };
+
+    function readVisitState(): VisitState | null {
+        try {
+            const raw = localStorage.getItem('kaan-visit-state');
+            if (!raw) return null;
+            const parsed = JSON.parse(raw) as VisitState;
+            if (!parsed || !Array.isArray(parsed.visits)) return null;
+            return parsed;
+        } catch {
+            return null;
+        }
+    }
+
+    function initSurpriseModal() {
+        const state = readVisitState();
+        if (!state?.pendingSurprise) return;
+
+        const modal = document.getElementById('surprise-modal') as HTMLDialogElement | null;
+        if (!modal) return;
+
+        state.pendingSurprise = false;
+        state.surpriseShown = true;
+        try {
+            localStorage.setItem('kaan-visit-state', JSON.stringify(state));
+            localStorage.removeItem('kaan-surprise-shown');
+            localStorage.removeItem('kaan-show-surprise');
+        } catch {}
+
+        requestAnimationFrame(() => {
+            if (!modal.open) modal.showModal();
+        });
+    }
+
     function initModals() {
+        initSurpriseModal();
+
         document.querySelectorAll('[data-open-privacy]').forEach((el) => {
             el.addEventListener('click', () => document.getElementById('privacy-modal')?.showModal());
         });

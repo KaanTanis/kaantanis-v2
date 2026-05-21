@@ -118,8 +118,86 @@ const jsonLd = {
 
         <script is:inline>
             (function () {
-                const stored = localStorage.getItem('theme');
-                const theme = stored === 'dark' || stored === 'cyberpunk' ? stored : 'light';
+                var STATE_KEY = 'kaan-visit-state';
+                var LEGACY_VISITS_KEY = 'kaan-visits';
+                var THEME_KEY = 'theme';
+                var SESSION_FLAG = 'kaan-session-counted';
+                var WINDOW_MS = 86400000;
+                var now = Date.now();
+
+                function loadState() {
+                    var state = {
+                        visits: [],
+                        surpriseShown: false,
+                        userPickedTheme: false,
+                        pendingSurprise: false,
+                    };
+                    try {
+                        var raw = localStorage.getItem(STATE_KEY);
+                        if (raw) {
+                            var parsed = JSON.parse(raw);
+                            if (parsed && Array.isArray(parsed.visits)) state = parsed;
+                        } else {
+                            var legacy = localStorage.getItem(LEGACY_VISITS_KEY);
+                            if (legacy) state.visits = JSON.parse(legacy);
+                        }
+                    } catch (e) {}
+                    if (localStorage.getItem('kaan-surprise-shown') === '1') state.surpriseShown = true;
+                    if (localStorage.getItem('kaan-theme-user-picked') === '1') state.userPickedTheme = true;
+                    state.visits = (state.visits || []).filter(function (t) {
+                        return now - t < WINDOW_MS;
+                    });
+                    return state;
+                }
+
+                function saveState(state) {
+                    try {
+                        localStorage.setItem(STATE_KEY, JSON.stringify(state));
+                        localStorage.removeItem(LEGACY_VISITS_KEY);
+                    } catch (e) {}
+                }
+
+                var state = loadState();
+                var newSession = !sessionStorage.getItem(SESSION_FLAG);
+
+                if (newSession) {
+                    sessionStorage.setItem(SESSION_FLAG, '1');
+                    state.visits.push(now);
+                }
+
+                var visitCount = state.visits.length;
+                var theme = 'light';
+                var stored = localStorage.getItem(THEME_KEY);
+
+                if (state.userPickedTheme && (stored === 'light' || stored === 'dark' || stored === 'cyberpunk')) {
+                    theme = stored;
+                    state.pendingSurprise = false;
+                } else if (visitCount === 2 && !state.surpriseShown) {
+                    theme = 'cyberpunk';
+                    state.pendingSurprise = true;
+                    try {
+                        localStorage.setItem(THEME_KEY, 'cyberpunk');
+                    } catch (e) {}
+                } else if (visitCount >= 3) {
+                    theme = stored === 'dark' ? 'dark' : 'light';
+                    state.pendingSurprise = false;
+                    if (stored === 'cyberpunk') {
+                        theme = 'light';
+                        try {
+                            localStorage.setItem(THEME_KEY, 'light');
+                        } catch (e) {}
+                    }
+                } else {
+                    theme = stored === 'dark' ? 'dark' : 'light';
+                    state.pendingSurprise = false;
+                    if (!stored) {
+                        try {
+                            localStorage.setItem(THEME_KEY, 'light');
+                        } catch (e) {}
+                    }
+                }
+
+                saveState(state);
                 document.documentElement.setAttribute('data-theme', theme);
             })();
         </script>
