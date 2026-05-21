@@ -71,49 +71,20 @@ function revealScene() {
 // =====================================================
 // ABOUT — Workspace OS scene
 // =====================================================
-function aboutOsScene() {
+function aboutScene() {
     runScene('about', () => {
-        const windows = gsap.utils.toArray<HTMLElement>('.os-window');
-        windows.forEach((win, i) => {
-            gsap.from(win, {
+        const chips = gsap.utils.toArray<HTMLElement>('.about-chip');
+        if (chips.length) {
+            gsap.from(chips, {
                 opacity: 0,
-                y: 50,
-                scale: 0.97,
-                duration: 0.85,
+                y: 10,
+                scale: 0.98,
+                duration: 0.5,
                 ease: 'power3.out',
-                delay: i * 0.06,
-                scrollTrigger: { trigger: win, start: 'top 88%' },
+                stagger: 0.025,
+                scrollTrigger: { trigger: '.about-chips', start: 'top 88%' },
             });
-        });
-
-        // Stagger process tags in activity window
-        const procRows = gsap.utils.toArray<HTMLElement>('.os-proc-row');
-        procRows.forEach((row) => {
-            const tags = row.querySelectorAll<HTMLElement>('.os-proc-tag');
-            gsap.from(tags, {
-                opacity: 0,
-                y: 6,
-                scale: 0.96,
-                duration: 0.45,
-                ease: 'power3.out',
-                stagger: 0.03,
-                scrollTrigger: { trigger: row, start: 'top 92%' },
-            });
-        });
-
-        // Stickies tilt jitter on hover already in CSS; add entrance pop
-        const notes = gsap.utils.toArray<HTMLElement>('.os-note');
-        notes.forEach((note, i) => {
-            gsap.from(note, {
-                opacity: 0,
-                y: 16,
-                rotate: 0,
-                duration: 0.6,
-                delay: i * 0.06,
-                ease: 'power3.out',
-                scrollTrigger: { trigger: note, start: 'top 92%' },
-            });
-        });
+        }
     });
 }
 
@@ -358,7 +329,7 @@ export function initAnimations() {
     if (prefersReducedMotion()) {
         document
             .querySelectorAll<HTMLElement>(
-                '[data-reveal], .os-window, .slab, [data-bubble], .lab-footer, .lab-footer-shell',
+                '[data-reveal], .about-chip, .slab, [data-bubble], .lab-footer, .lab-footer-shell',
             )
             .forEach((el) => {
                 el.style.opacity = '1';
@@ -369,7 +340,7 @@ export function initAnimations() {
 
     heroSafeScene();
     revealScene();
-    aboutOsScene();
+    aboutScene();
     processSlabScene();
     contactChatScene();
     chromeScene();

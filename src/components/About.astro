@@ -2,443 +2,97 @@
 import { about } from '../data/site';
 ---
 
-<section id="about" class="os-section scroll-mt-20 py-20 md:py-28 relative overflow-hidden">
-    <div class="os-bg-grid" aria-hidden="true"></div>
-    <div class="os-bg-glow os-bg-glow-a" aria-hidden="true"></div>
-    <div class="os-bg-glow os-bg-glow-b" aria-hidden="true"></div>
+<section id="about" class="about-section scroll-mt-20 py-20 md:py-28">
+    <div class="container-site about-layout">
+        <header class="about-intro">
+            <span class="eyebrow reveal" data-reveal>{about.eyebrow}</span>
+            <h2
+                class="display-section reveal mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+                data-reveal
+                data-reveal-delay="0.05"
+                set:html={about.title}
+            />
+            <p class="about-lead reveal" data-reveal data-reveal-delay="0.1">
+                {about.lead}
+            </p>
+        </header>
 
-    <div class="container-site relative z-10">
-        <!-- OS Menubar -->
-        <div class="os-menubar reveal" data-reveal>
-            <div class="os-menubar-left">
-                <span class="os-logo" aria-hidden="true">◐</span>
-                <strong>about.kaan</strong>
-            </div>
-            <div class="os-menubar-right">
-                <span class="os-pill">{about.eyebrow}</span>
-                <span class="os-time" id="os-time">--:--</span>
-            </div>
+        <div class="about-pillars reveal" data-reveal data-reveal-delay="0.14">
+            {about.pillars.map((pillar) => (
+                <article class="about-pillar">
+                    <span class="about-pillar-n" aria-hidden="true">{pillar.n}</span>
+                    <h3 class="about-pillar-title">{pillar.title}</h3>
+                    <p class="about-pillar-desc">{pillar.desc}</p>
+                </article>
+            ))}
         </div>
 
-        <!-- Workspace -->
-        <div class="os-workspace">
-            <!-- Terminal window -->
-            <article class="os-window os-window--terminal reveal" data-reveal data-reveal-delay="0.06">
-                <header class="os-titlebar">
-                    <span class="os-dot os-dot-red"></span>
-                    <span class="os-dot os-dot-yellow"></span>
-                    <span class="os-dot os-dot-green"></span>
-                    <span class="os-titlebar-name">terminal — about.sh</span>
-                </header>
-                <div class="os-window-body os-terminal-body">
-                    <div class="os-cmd-line">
-                        <span class="os-cmd-prompt">kaan@studio</span>
-                        <span class="os-cmd-arrow">~$</span>
-                        <span class="os-cmd-text">cat manifesto.md</span>
-                    </div>
-                    <h2 class="os-display" set:html={about.title} />
-                    {about.paragraphs.map((p) => <p class="os-output rich" set:html={p} />)}
-
-                    <div class="os-cmd-line mt-6">
-                        <span class="os-cmd-prompt">kaan@studio</span>
-                        <span class="os-cmd-arrow">~$</span>
-                        <span class="os-cmd-text">cat workstyle.md</span>
-                    </div>
-                    {about.bioParagraphs.map((p) => <p class="os-output rich" set:html={p} />)}
-
-                    <div class="os-cmd-line mt-4">
-                        <span class="os-cmd-prompt">kaan@studio</span>
-                        <span class="os-cmd-arrow">~$</span>
-                        <span class="os-cmd-cursor" aria-hidden="true"></span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Activity monitor: skills -->
-            <article class="os-window os-window--activity reveal" data-reveal data-reveal-delay="0.12">
-                <header class="os-titlebar">
-                    <span class="os-dot os-dot-red"></span>
-                    <span class="os-dot os-dot-yellow"></span>
-                    <span class="os-dot os-dot-green"></span>
-                    <span class="os-titlebar-name">activity — skills.proc</span>
-                </header>
-                <div class="os-window-body os-activity-body">
-                    {about.skills.map((s) => (
-                        <div class="os-proc-row">
-                            <div class="os-proc-head">
-                                <span class="os-proc-dot" aria-hidden="true"></span>
-                                <span class="os-proc-name">{s.label}</span>
-                                <span class="os-proc-status">running</span>
-                            </div>
-                            <div class="os-proc-tags">
-                                {s.tags.map((tag) => (
-                                    <span class="os-proc-tag">{tag}</span>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </article>
-
-            <!-- Stickies: strengths -->
-            <article class="os-window os-window--notes reveal" data-reveal data-reveal-delay="0.2">
-                <header class="os-titlebar">
-                    <span class="os-dot os-dot-red"></span>
-                    <span class="os-dot os-dot-yellow"></span>
-                    <span class="os-dot os-dot-green"></span>
-                    <span class="os-titlebar-name">stickies — strengths</span>
-                </header>
-                <div class="os-window-body os-notes-body">
-                    {about.strengths.map((item, i) => (
-                        <span class="os-note" style={`--tilt: ${i % 2 === 0 ? -1.5 : 1.5}deg`}>
-                            <span class="os-note-pin" aria-hidden="true"></span>
-                            <span>{item}</span>
-                        </span>
-                    ))}
-                </div>
-            </article>
+        <div class="about-chips reveal" data-reveal data-reveal-delay="0.2" aria-label="Öne çıkan teknolojiler">
+            {about.highlights.map((tag) => (
+                <span class="about-chip">{tag}</span>
+            ))}
         </div>
 
-        <!-- Marquee ticker -->
-        <div class="os-marquee reveal" data-reveal data-reveal-delay="0.25">
-            <div class="os-marquee-track">
-                <span>FULL-STACK</span><em>●</em>
-                <span>UI / UX</span><em>●</em>
-                <span>DEVOPS</span><em>●</em>
-                <span>PRODUCT THINKING</span><em>●</em>
-                <span>SYSTEM DESIGN</span><em>●</em>
-                <span>LARAVEL · GO · ASTRO</span><em>●</em>
-                <span>VUE · LIVEWIRE · FILAMENT</span><em>●</em>
-                <span>REACT NATIVE · EXPO</span><em>●</em>
-                <span>DOCKER · NGINX · REDIS</span><em>●</em>
-                <span>FULL-STACK</span><em>●</em>
-                <span>UI / UX</span><em>●</em>
-                <span>DEVOPS</span><em>●</em>
-                <span>PRODUCT THINKING</span><em>●</em>
-                <span>SYSTEM DESIGN</span><em>●</em>
-                <span>LARAVEL · GO · ASTRO</span><em>●</em>
-                <span>VUE · LIVEWIRE · FILAMENT</span><em>●</em>
-                <span>REACT NATIVE · EXPO</span><em>●</em>
-                <span>DOCKER · NGINX · REDIS</span><em>●</em>
+        <details class="about-details">
+            <summary class="about-details-trigger">Teknik detay</summary>
+            <div class="about-details-panel">
+                {about.skillsDetail.map((group) => (
+                    <div class="about-details-row">
+                        <span class="about-details-label">{group.label}</span>
+                        <span class="about-details-tags">{group.tags.join(' · ')}</span>
+                    </div>
+                ))}
             </div>
-        </div>
+        </details>
     </div>
 </section>
 
 <style>
-    .os-section { isolation: isolate; }
-
-    .os-bg-grid {
-        position: absolute;
-        inset: 0;
-        background-image:
-            linear-gradient(to right, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
-            linear-gradient(to bottom, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px);
-        background-size: 32px 32px;
-        opacity: 0.18;
-        mask-image: radial-gradient(ellipse at top, black 0%, transparent 80%);
-        pointer-events: none;
-    }
-    .os-bg-glow {
-        position: absolute;
-        border-radius: 9999px;
-        filter: blur(90px);
-        opacity: 0.22;
-        pointer-events: none;
-    }
-    .os-bg-glow-a {
-        width: 26rem; height: 26rem;
-        top: 3rem; left: -8rem;
-        background: color-mix(in srgb, var(--accent) 55%, transparent);
-    }
-    .os-bg-glow-b {
-        width: 30rem; height: 30rem;
-        bottom: 0; right: -10rem;
-        background: color-mix(in srgb, var(--fg) 28%, transparent);
-    }
-
-    /* Menubar */
-    .os-menubar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 0.55rem 1rem;
-        border: 1px solid var(--border);
-        border-radius: 0.85rem;
-        background: color-mix(in srgb, var(--surface) 86%, transparent);
-        backdrop-filter: blur(20px);
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: var(--fg-muted);
-        margin-bottom: 1rem;
-    }
-    .os-menubar-left, .os-menubar-right { display: flex; align-items: center; gap: 0.85rem; }
-    .os-menubar-left strong { color: var(--fg-strong); font-weight: 800; }
-    .os-logo { font-size: 1rem; color: var(--accent); }
-    .os-menubar-item { color: var(--fg-subtle); }
-    .os-pill {
-        padding: 0.22rem 0.6rem;
-        border-radius: 9999px;
-        border: 1px solid var(--border);
-        background: var(--bg-muted);
-        font-size: 0.64rem;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-    }
-    .os-time { font-variant-numeric: tabular-nums; color: var(--fg); }
-
-    /* Workspace grid */
-    .os-workspace {
+    .about-layout {
         display: grid;
-        gap: 1.1rem;
-        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
-        grid-template-areas:
-            'terminal activity'
-            'notes notes';
+        gap: 2.5rem;
     }
-    .os-window--terminal { grid-area: terminal; }
-    .os-window--activity { grid-area: activity; }
-    .os-window--notes { grid-area: notes; }
 
-    @media (max-width: 900px) {
-        .os-workspace {
-            grid-template-columns: minmax(0, 1fr);
+    @media (min-width: 900px) {
+        .about-layout {
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
             grid-template-areas:
-                'terminal'
-                'activity'
-                'notes';
+                'intro pillars'
+                'chips chips'
+                'details details';
+            column-gap: 4rem;
+            row-gap: 2.75rem;
+            align-items: start;
+        }
+
+        .about-intro {
+            grid-area: intro;
+        }
+
+        .about-pillars {
+            grid-area: pillars;
+        }
+
+        .about-chips {
+            grid-area: chips;
+        }
+
+        .about-details {
+            grid-area: details;
         }
     }
 
-    .os-window {
-        border: 1px solid var(--border);
-        border-radius: 1rem;
-        background: color-mix(in srgb, var(--surface) 86%, transparent);
-        box-shadow: var(--shadow-md);
-        backdrop-filter: blur(18px);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-    }
-    .os-titlebar {
-        display: flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.5rem 0.85rem;
-        border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-        background: color-mix(in srgb, var(--bg-muted) 70%, transparent);
-        font-size: 0.7rem;
-        font-weight: 700;
-        color: var(--fg-muted);
-    }
-    .os-dot {
-        width: 0.7rem; height: 0.7rem;
-        border-radius: 9999px;
-        flex-shrink: 0;
-    }
-    .os-dot-red { background: #ff5f57; }
-    .os-dot-yellow { background: #febc2e; }
-    .os-dot-green { background: #28c840; }
-    .os-titlebar-name {
-        margin-left: 0.5rem;
-        flex: 1;
-        text-align: center;
-        letter-spacing: 0.06em;
-    }
-    .os-window-body { padding: 1.1rem 1.2rem; flex: 1; }
-
-    /* Terminal */
-    .os-terminal-body {
-        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-        font-size: 0.86rem;
-        line-height: 1.6;
-        color: var(--fg);
-    }
-    .os-cmd-line {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: 0.78rem;
-        margin-bottom: 0.6rem;
-    }
-    .os-cmd-prompt { color: var(--accent); font-weight: 700; }
-    .os-cmd-arrow { color: var(--fg-subtle); }
-    .os-cmd-text { color: var(--fg); font-weight: 600; }
-    .os-cmd-cursor {
-        display: inline-block;
-        width: 0.5rem;
-        height: 1rem;
-        background: var(--fg);
-        animation: osBlink 1s steps(2) infinite;
-    }
-    @keyframes osBlink { 50% { opacity: 0; } }
-
-    .os-display {
-        font-family: var(--font-sans);
-        font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-        line-height: 1.05;
-        letter-spacing: -0.02em;
-        font-weight: 800;
-        margin: 0.4rem 0 1rem;
-        color: var(--fg);
-    }
-    .os-output {
-        font-family: var(--font-sans);
-        font-size: 0.96rem;
-        line-height: 1.7;
-        color: var(--fg-muted);
-        margin: 0 0 1rem;
-    }
-    .os-output:last-child { margin-bottom: 0; }
-
-    /* Activity — process list */
-    .os-window--activity { min-height: 100%; }
-    .os-activity-body {
-        display: grid;
-        gap: 0.65rem;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    @media (max-width: 1100px) {
-        .os-activity-body { grid-template-columns: minmax(0, 1fr); }
-    }
-    .os-proc-row {
-        padding: 0.75rem 0.85rem;
-        border: 1px solid var(--border);
-        border-radius: 0.6rem;
-        background: color-mix(in srgb, var(--bg-muted) 50%, transparent);
-    }
-    .os-window--activity .os-window-body {
-        padding: 1rem 1.1rem 1.15rem;
-        max-height: none;
-    }
-    .os-proc-head {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-    }
-    .os-proc-dot {
-        width: 0.45rem;
-        height: 0.45rem;
-        border-radius: 9999px;
-        background: #28c840;
-        flex-shrink: 0;
-        box-shadow: 0 0 0 2px color-mix(in srgb, #28c840 25%, transparent);
-    }
-    .os-proc-name {
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--fg);
-        flex: 1;
-    }
-    .os-proc-status {
-        font-size: 0.62rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        color: var(--fg-subtle);
-        text-transform: lowercase;
-    }
-    .os-proc-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.35rem;
-    }
-    .os-proc-tag {
-        padding: 0.22rem 0.55rem;
-        border-radius: 0.4rem;
-        border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
-        background: color-mix(in srgb, var(--surface) 90%, transparent);
-        font-size: 0.66rem;
-        font-weight: 600;
-        color: var(--fg-muted);
-        line-height: 1.3;
-    }
-
-    /* Stickies */
-    .os-notes-body {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-    }
-    .os-note {
-        position: relative;
-        padding: 0.7rem 0.9rem 0.7rem 1.4rem;
-        background: color-mix(in srgb, var(--accent) 14%, var(--surface));
-        border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
-        border-radius: 0.6rem;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--fg-strong);
-        box-shadow: var(--shadow-sm);
-        transform: rotate(var(--tilt, 0));
-        transition: transform 0.25s ease;
-    }
-    .os-note:hover { transform: rotate(0) translateY(-2px); }
-    .os-note-pin {
-        position: absolute;
-        left: 0.6rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 0.45rem;
-        height: 0.45rem;
-        border-radius: 9999px;
-        background: var(--accent);
-    }
-
-    /* Marquee */
-    .os-marquee {
-        margin-top: 1.4rem;
-        overflow: hidden;
-        border: 1px solid var(--border);
-        border-radius: 0.75rem;
-        background: color-mix(in srgb, var(--surface) 84%, transparent);
-        padding: 0.55rem 0;
-    }
-    .os-marquee-track {
-        display: inline-flex;
-        gap: 1rem;
-        white-space: nowrap;
-        animation: osMarquee 30s linear infinite;
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.18em;
-        color: var(--fg-subtle);
-        text-transform: uppercase;
-        padding-left: 1rem;
-    }
-    .os-marquee-track em {
-        font-style: normal;
-        color: var(--accent);
-    }
-    @keyframes osMarquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .os-marquee-track {
-            animation: none;
-            flex-wrap: wrap;
-            justify-content: center;
-            white-space: normal;
-            padding: 0.25rem 1rem;
-        }
-    }
-
-    /* Em underline (scoped to display heading only) */
-    .os-display em {
+    .about-intro :global(em) {
         font-style: normal;
         position: relative;
         white-space: nowrap;
     }
-    .os-display em::after {
+
+    .about-intro :global(em)::after {
         content: '';
         position: absolute;
-        left: 0; right: 0;
+        left: 0;
+        right: 0;
         bottom: 0.06em;
         height: 0.18em;
         background: var(--accent);
@@ -446,21 +100,200 @@ import { about } from '../data/site';
         z-index: -1;
         border-radius: 9999px;
     }
-</style>
 
-<script>
-    function initOsTime() {
-        const el = document.getElementById('os-time');
-        if (!el) return;
-        const tick = () => {
-            const now = new Date();
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            el.textContent = `${hh}:${mm}`;
-        };
-        tick();
-        setInterval(tick, 30000);
+    .about-lead {
+        margin: 1.25rem 0 0;
+        max-width: 28rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        font-weight: 600;
+        color: var(--fg-muted);
     }
-    initOsTime();
-    document.addEventListener('astro:page-load', initOsTime);
-</script>
+
+    .about-pillars {
+        display: grid;
+        gap: 0.85rem;
+    }
+
+    @media (min-width: 640px) and (max-width: 899px) {
+        .about-pillars {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+    }
+
+    .about-pillar {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        column-gap: 0.85rem;
+        row-gap: 0.15rem;
+        padding: 1rem 0;
+        border-top: 1px solid var(--border);
+    }
+
+    @media (min-width: 900px) {
+        .about-pillar {
+            padding: 1.1rem 0 0;
+        }
+
+        .about-pillar:first-child {
+            padding-top: 0;
+            border-top: none;
+        }
+    }
+
+    .about-pillar-n {
+        grid-row: 1 / span 2;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: var(--fg-subtle);
+        padding-top: 0.15rem;
+    }
+
+    .about-pillar-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--fg);
+    }
+
+    .about-pillar-desc {
+        margin: 0;
+        grid-column: 2;
+        font-size: 0.88rem;
+        line-height: 1.45;
+        font-weight: 600;
+        color: var(--fg-muted);
+    }
+
+    .about-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border);
+    }
+
+    @media (min-width: 900px) {
+        .about-chips {
+            padding-top: 0;
+            border-top: none;
+        }
+    }
+
+    .about-chip {
+        padding: 0.4rem 0.75rem;
+        border-radius: 9999px;
+        border: 1px solid var(--border);
+        background: var(--bg-muted);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: var(--fg);
+        transition:
+            border-color 0.2s ease,
+            background-color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .about-chip:hover {
+        border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+        background: color-mix(in srgb, var(--accent) 8%, var(--bg-muted));
+        transform: translateY(-1px);
+    }
+
+    .about-details {
+        border-top: 1px solid var(--border);
+        padding-top: 0.25rem;
+    }
+
+    .about-details-trigger {
+        list-style: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.65rem 0;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--fg-subtle);
+        transition: color 0.2s ease;
+    }
+
+    .about-details-trigger::-webkit-details-marker {
+        display: none;
+    }
+
+    .about-details-trigger::after {
+        content: '+';
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--fg);
+        transition: transform 0.25s ease;
+    }
+
+    .about-details[open] .about-details-trigger {
+        color: var(--fg);
+    }
+
+    .about-details[open] .about-details-trigger::after {
+        content: '−';
+    }
+
+    .about-details-panel {
+        display: grid;
+        gap: 1rem;
+        padding: 0.5rem 0 0.25rem;
+        animation: aboutDetailsIn 0.35s ease;
+    }
+
+    @keyframes aboutDetailsIn {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .about-details-panel {
+            animation: none;
+        }
+    }
+
+    .about-details-row {
+        display: grid;
+        gap: 0.35rem;
+    }
+
+    @media (min-width: 640px) {
+        .about-details-row {
+            grid-template-columns: 6.5rem minmax(0, 1fr);
+            gap: 1rem;
+            align-items: baseline;
+        }
+    }
+
+    .about-details-label {
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--fg);
+    }
+
+    .about-details-tags {
+        font-size: 0.82rem;
+        line-height: 1.55;
+        font-weight: 500;
+        color: var(--fg-muted);
+    }
+</style>
