@@ -1,0 +1,86 @@
+---
+import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
+---
+
+<dialog id="privacy-modal" class="site-modal">
+    <div class="site-modal-box prose-modal">
+        <h2 class="text-xl font-bold">Gizlilik Politikası</h2>
+        <div class="mt-4 space-y-3 text-sm text-[var(--fg-muted)]" set:html={privacyPolicyHtml} />
+        <form method="dialog" class="mt-8">
+            <button type="submit" class="btn btn-primary">Kapat</button>
+        </form>
+    </div>
+</dialog>
+
+<dialog id="cookie-modal" class="site-modal">
+    <div class="site-modal-box prose-modal">
+        <h2 class="text-xl font-bold">Çerezler</h2>
+        <div class="mt-4 space-y-3 text-sm text-[var(--fg-muted)]" set:html={cookieNoticeHtml} />
+        <form method="dialog" class="mt-8">
+            <button type="submit" class="btn btn-primary">Kapat</button>
+        </form>
+    </div>
+</dialog>
+
+<div
+    id="cookie-consent"
+    class="cookie-banner fixed bottom-0 left-0 right-0 z-50 hidden border-t border-[var(--border)] bg-[var(--surface)] p-4 shadow-[var(--shadow)] sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-md sm:rounded-2xl sm:border"
+    role="dialog"
+    aria-label="Çerez bildirimi"
+>
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm text-[var(--fg-muted)]">
+            Bu web sitesi deneyiminizi geliştirmek için çerezler kullanır.
+            <button type="button" class="underline" data-open-cookie>Detaylar</button>
+        </p>
+        <button type="button" id="accept-cookie" class="btn btn-primary shrink-0">Kabul Et</button>
+    </div>
+</div>
+
+<style>
+    .site-modal {
+        margin: auto;
+        max-width: 42rem;
+        width: calc(100% - 2rem);
+        border: none;
+        border-radius: var(--radius-lg);
+        padding: 0;
+        background: transparent;
+    }
+    .site-modal::backdrop {
+        background: rgb(0 0 0 / 0.55);
+        backdrop-filter: blur(4px);
+    }
+    .site-modal-box {
+        background: var(--bg);
+        color: var(--fg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+    }
+</style>
+
+<script>
+    function initModals() {
+        document.querySelectorAll('[data-open-privacy]').forEach((el) => {
+            el.addEventListener('click', () => document.getElementById('privacy-modal')?.showModal());
+        });
+        document.querySelectorAll('[data-open-cookie]').forEach((el) => {
+            el.addEventListener('click', () => document.getElementById('cookie-modal')?.showModal());
+        });
+
+        const banner = document.getElementById('cookie-consent');
+        const accept = document.getElementById('accept-cookie');
+        if (banner && !localStorage.getItem('cookie-consent')) {
+            banner.classList.remove('hidden');
+        }
+        accept?.addEventListener('click', () => {
+            localStorage.setItem('cookie-consent', '1');
+            banner?.classList.add('hidden');
+        });
+    }
+
+    initModals();
+    document.addEventListener('astro:page-load', initModals);
+</script>

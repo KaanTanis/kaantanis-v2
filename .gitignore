@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+
+# env
+.env
+.env.production
+.env.local
+
+# logs
+logs/
+*.log
+
+# os
+.DS_Store
+
+# astro
+.astro/

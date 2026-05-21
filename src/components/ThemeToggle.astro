@@ -1,0 +1,64 @@
+---
+/** Light → Dark → Cyberpunk */
+---
+
+<button
+    type="button"
+    id="theme-toggle"
+    class="group inline-flex size-10 items-center justify-center rounded-full border border-[var(--border)] text-[var(--fg)] transition hover:border-[var(--border-strong)] hover:bg-[var(--bg-muted)]"
+    aria-label="Tema değiştir"
+    title="Tema değiştir"
+>
+    <span class="theme-icon theme-icon-light" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+    </span>
+    <span class="theme-icon theme-icon-dark hidden" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+        </svg>
+    </span>
+    <span class="theme-icon theme-icon-cyber hidden" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+            <path d="M11.3 2 4 13h6l-1.3 9L18 9h-6l1.3-7H11.3z" />
+        </svg>
+    </span>
+</button>
+
+<script>
+    const themes = ['light', 'dark', 'cyberpunk'] as const;
+    type Theme = (typeof themes)[number];
+
+    function syncIcons(theme: Theme) {
+        document.querySelectorAll('.theme-icon').forEach((el) => el.classList.add('hidden'));
+        const id = theme === 'cyberpunk' ? 'cyber' : theme;
+        document.querySelector(`.theme-icon-${id}`)?.classList.remove('hidden');
+    }
+
+    function applyTheme(theme: Theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        try {
+            localStorage.setItem('theme', theme);
+        } catch {}
+        syncIcons(theme);
+    }
+
+    function initThemeToggle() {
+        const btn = document.getElementById('theme-toggle');
+        if (!btn || btn.dataset.bound) return;
+        btn.dataset.bound = '1';
+
+        const current = (document.documentElement.getAttribute('data-theme') as Theme) ?? 'light';
+        syncIcons(current);
+
+        btn.addEventListener('click', () => {
+            const active = (document.documentElement.getAttribute('data-theme') as Theme) ?? 'light';
+            const idx = themes.indexOf(active);
+            applyTheme(themes[(idx + 1) % themes.length]);
+        });
+    }
+
+    initThemeToggle();
+    document.addEventListener('astro:page-load', initThemeToggle);
+</script>

@@ -1,0 +1,152 @@
+---
+import { steps } from '../data/site';
+---
+
+<section id="process" class="relative scroll-mt-20 py-24 md:py-32 overflow-hidden">
+    <div class="process-grid-noise" aria-hidden="true"></div>
+    <div class="container-site relative z-10">
+        <header class="max-w-3xl">
+            <span class="eyebrow reveal" data-reveal>Süreç</span>
+            <h2 class="display-section reveal mt-4 text-4xl sm:text-5xl md:text-6xl" data-reveal data-reveal-delay="0.05">
+                Linear değil, <em>sahne sahne</em>.
+            </h2>
+            <p class="reveal mt-5 text-base font-medium text-[var(--fg-muted)] sm:text-lg" data-reveal data-reveal-delay="0.1">
+                Her adım bir ekran değil; bir <strong>deneyim katmanı</strong>. Scroll ettikçe süreç akıyor.
+            </p>
+        </header>
+
+        <div class="process-rail mt-14 md:mt-20">
+            {
+                steps.map((step, index) => (
+                    <article class="process-item reveal" data-reveal data-step={index}>
+                        <div class="process-item-media">
+                            <img src={step.image} width="560" height="420" alt={`Kaan Tanış - ${step.title}`} loading="lazy" />
+                            <span class="process-step-index">{step.n}</span>
+                        </div>
+                        <div class="process-item-content">
+                            <p class="process-item-kicker">{step.kicker}</p>
+                            <h3 class="process-item-title">{step.title}</h3>
+                            <p class="rich process-item-text" set:html={step.content} />
+                        </div>
+                    </article>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .process-grid-noise {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(to right, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
+            linear-gradient(to bottom, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px);
+        background-size: 52px 52px;
+        opacity: 0.18;
+        mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+        pointer-events: none;
+    }
+
+    .process-rail {
+        display: grid;
+        gap: 2rem;
+    }
+
+    .process-item {
+        display: grid;
+        gap: 1rem;
+        border: 1px solid var(--border);
+        border-radius: 1.4rem;
+        padding: 1rem;
+        background: color-mix(in srgb, var(--surface) 85%, transparent);
+        backdrop-filter: blur(14px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    @media (min-width: 900px) {
+        .process-item {
+            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.25rem;
+        }
+
+        .process-item:nth-child(even) .process-item-media {
+            order: 2;
+        }
+    }
+
+    .process-item-media {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem;
+    }
+
+    .process-item-media img {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        display: block;
+    }
+
+    .process-step-index {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+        background: color-mix(in srgb, var(--surface) 70%, transparent);
+        padding: 0.4rem 0.65rem;
+        border-radius: 9999px;
+    }
+
+    .process-item-content {
+        padding: 0.35rem 0.25rem;
+    }
+
+    .process-item-kicker {
+        margin: 0 0 0.45rem 0;
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--fg-subtle);
+    }
+
+    .process-item-title {
+        margin: 0;
+        font-size: clamp(1.5rem, 2.8vw, 2.35rem);
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+        font-weight: 800;
+    }
+
+    .process-item-text {
+        margin-top: 0.75rem;
+        font-size: 0.97rem;
+        line-height: 1.7;
+        color: var(--fg-muted);
+    }
+
+    em {
+        font-style: normal;
+        position: relative;
+        white-space: nowrap;
+    }
+
+    em::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0.06em;
+        height: 0.18em;
+        background: var(--accent);
+        opacity: 0.7;
+        z-index: -1;
+        border-radius: 9999px;
+    }
+</style>

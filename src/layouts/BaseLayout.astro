@@ -1,0 +1,128 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const title = Astro.props.title ?? site.title;
+const description = Astro.props.description ?? site.description;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+        {
+            '@type': 'WebSite',
+            '@id': `${site.url}/#website`,
+            url: site.url,
+            name: site.title,
+            headline: site.title,
+            description: site.description,
+            inLanguage: 'tr-TR',
+            publisher: { '@id': `${site.url}/#organization` },
+        },
+        {
+            '@type': 'Organization',
+            '@id': `${site.url}/#organization`,
+            name: site.name,
+            url: site.url,
+            logo: {
+                '@type': 'ImageObject',
+                url: `${site.url}/logo.svg`,
+                width: 300,
+                height: 300,
+            },
+        },
+        {
+            '@type': 'Person',
+            '@id': `${site.url}/#person`,
+            name: site.name,
+            url: site.url,
+            jobTitle: 'Software Developer & UI Designer',
+            description: site.description,
+            sameAs: site.sameAs,
+            image: `${site.url}/logo.svg`,
+            worksFor: { '@id': `${site.url}/#organization` },
+        },
+        {
+            '@type': 'WebPage',
+            '@id': `${site.url}/#webpage`,
+            url: site.url,
+            name: site.title,
+            description: site.description,
+            isPartOf: { '@id': `${site.url}/#website` },
+            about: { '@id': `${site.url}/#person` },
+            inLanguage: 'tr-TR',
+        },
+    ],
+};
+---
+
+<!doctype html>
+<html lang="tr" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content={Astro.generator} />
+
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="author" content={site.name} />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <link rel="canonical" href={canonical} />
+        <meta name="google-site-verification" content={site.googleSiteVerification} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={site.locale} />
+        <meta property="og:site_name" content={site.name} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={`${site.url}/logo.svg`} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content={site.twitter} />
+        <meta name="twitter:creator" content={site.twitter} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={`${site.url}/logo.svg`} />
+
+        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-Regular.ttf" crossorigin />
+        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-Bold.ttf" crossorigin />
+        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-ExtraBold.ttf" crossorigin />
+
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+        {
+            import.meta.env.PROD && (
+                <>
+                    <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}></script>
+                    <script is:inline define:vars={{ gaId: site.gaId }}>
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag() {
+                            dataLayer.push(arguments);
+                        }
+                        gtag('js', new Date());
+                        gtag('config', gaId);
+                    </script>
+                </>
+            )
+        }
+
+        <script is:inline>
+            (function () {
+                const stored = localStorage.getItem('theme');
+                const theme = stored === 'dark' || stored === 'cyberpunk' ? stored : 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+            })();
+        </script>
+    </head>
+    <body class="overflow-x-hidden antialiased">
+        <slot />
+    </body>
+
+</html>
