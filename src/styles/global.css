@@ -32,6 +32,8 @@
     --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.12);
     --shadow-lg: 0 20px 50px -20px rgb(0 0 0 / 0.18);
     --dock-bg: rgb(255 255 255 / 0.72);
+    /* Sabit navbar (mt-3 + h-14) + güvenlik payı */
+    --site-header-offset: 5.25rem;
 }
 
 [data-theme='dark'] {
@@ -78,6 +80,13 @@
     --shadow-md: 0 0 30px -8px #ff00ff77;
     --shadow-lg: 0 0 60px -10px #ff00ff88, 0 20px 50px -20px #000;
     --dock-bg: rgb(21 5 43 / 0.78);
+}
+
+@media (min-width: 640px) {
+    :root,
+    [data-theme='light'] {
+        --site-header-offset: 5.5rem;
+    }
 }
 
 html {

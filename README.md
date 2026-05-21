@@ -15,17 +15,20 @@ Node **≥ 22.12** gerekir.
 ## Production build & PM2
 
 ```bash
+cp .env.example .env
+# .env içinde PORT, HOST ve isteğe bağlı Telegram değerlerini düzenle
+
 npm run build
 mkdir -p logs
 pm2 start ecosystem.config.cjs
 pm2 save
 ```
 
-Nginx örneği: `proxy_pass http://127.0.0.1:3000;`
+Nginx upstream portu `.env` içindeki `PORT` ile aynı olmalı, örn. `proxy_pass http://127.0.0.1:3000;`
 
 ### Canlıya alma kontrol listesi
 
-- [ ] `.env` — `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` (isteğe bağlı)
+- [ ] `.env` — `PORT`, `HOST`, `NODE_ENV` (+ isteğe bağlı `TELEGRAM_*`)
 - [ ] `npm run build` hatasız
 - [ ] `POST /api/contact` test (form + rate limit)
 - [ ] Google Search Console — sitemap gönder, URL denetimi
@@ -47,7 +50,7 @@ Ardından `src/data/site.ts` içinde yolları `.webp` yap.
 1. [@BotFather](https://t.me/BotFather) ile bot oluşturun.
 2. `TELEGRAM_BOT_TOKEN` değerini `.env` dosyasına ekleyin.
 3. Chat ID için bota bir mesaj atın, ardından `https://api.telegram.org/bot<TOKEN>/getUpdates` ile `chat.id` alın.
-4. `TELEGRAM_CHAT_ID` değerini `.env` ve PM2 `env` bloğuna ekleyin.
+4. `TELEGRAM_CHAT_ID` değerini `.env` dosyasına ekleyin; `pm2 restart kaantanis`
 
 Yapılandırma yoksa form yine başarı döner; gönderim sunucu loglarına yazılır.
 

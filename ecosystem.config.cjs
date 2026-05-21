@@ -7,11 +7,6 @@ module.exports = {
             instances: 1,
             exec_mode: 'fork',
             env_file: '.env',
-            env: {
-                NODE_ENV: 'production',
-                HOST: '0.0.0.0',
-                PORT: 3000,
-            },
             max_memory_restart: '300M',
             error_file: './logs/err.log',
             out_file: './logs/out.log',

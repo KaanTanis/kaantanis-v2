@@ -38,16 +38,16 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
 
 <div
     id="cookie-consent"
-    class="cookie-banner fixed inset-x-0 z-50 hidden border-t border-[var(--border)] bg-[var(--surface)] p-4 shadow-[var(--shadow-md)] max-md:bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:bottom-6 md:left-auto md:right-6 md:max-w-md md:rounded-2xl md:border md:border-t"
+    class="cookie-banner hidden"
     role="dialog"
     aria-label="Çerez bildirimi"
 >
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <p class="text-sm text-[var(--fg-muted)]">
-            Bu web sitesi deneyiminizi geliştirmek için çerezler kullanır.
-            <button type="button" class="underline" data-open-cookie>Detaylar</button>
+    <div class="cookie-banner-inner">
+        <p class="cookie-banner-text">
+            Çerezler kullanıyoruz.
+            <button type="button" class="cookie-banner-link" data-open-cookie>Detay</button>
         </p>
-        <button type="button" id="accept-cookie" class="btn btn-primary shrink-0">Kabul Et</button>
+        <button type="button" id="accept-cookie" class="cookie-banner-accept">Tamam</button>
     </div>
 </div>
 
@@ -124,6 +124,92 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
     .surprise-btn {
         width: 100%;
         justify-content: center;
+    }
+
+    /* Kompakt çerez bildirimi */
+    .cookie-banner {
+        position: fixed;
+        z-index: 50;
+        right: max(0.65rem, env(safe-area-inset-right, 0px));
+        bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+        left: auto;
+        max-width: min(20rem, calc(100vw - 1.25rem));
+        padding: 0.5rem 0.55rem 0.5rem 0.7rem;
+        border: 1px solid var(--border);
+        border-radius: 9999px;
+        background: color-mix(in srgb, var(--surface) 92%, transparent);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(14px);
+    }
+
+    @media (min-width: 640px) {
+        .cookie-banner {
+            bottom: 1.25rem;
+            max-width: 22rem;
+            padding: 0.6rem 0.65rem 0.6rem 0.85rem;
+            border-radius: 1rem;
+        }
+    }
+
+    .cookie-banner-inner {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+    }
+
+    .cookie-banner-text {
+        margin: 0;
+        font-size: 0.68rem;
+        line-height: 1.35;
+        font-weight: 600;
+        color: var(--fg-muted);
+        white-space: nowrap;
+    }
+
+    @media (min-width: 640px) {
+        .cookie-banner-text {
+            font-size: 0.75rem;
+            white-space: normal;
+        }
+    }
+
+    .cookie-banner-link {
+        margin-left: 0.15rem;
+        padding: 0;
+        border: none;
+        background: none;
+        font: inherit;
+        font-weight: 800;
+        color: var(--fg);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        cursor: pointer;
+    }
+
+    .cookie-banner-accept {
+        flex-shrink: 0;
+        padding: 0.35rem 0.7rem;
+        border: none;
+        border-radius: 9999px;
+        background: var(--accent);
+        color: var(--accent-fg);
+        font-size: 0.68rem;
+        font-weight: 800;
+        line-height: 1;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cookie-banner-accept:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    @media (min-width: 640px) {
+        .cookie-banner-accept {
+            padding: 0.4rem 0.85rem;
+            font-size: 0.72rem;
+        }
     }
 </style>
 
