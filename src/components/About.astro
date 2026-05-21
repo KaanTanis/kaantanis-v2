@@ -84,19 +84,20 @@ import { about } from '../data/site';
                     <span class="os-titlebar-name">activity — skills.proc</span>
                 </header>
                 <div class="os-window-body os-activity-body">
-                    {about.skills.map((s, i) => {
-                        const usage = Math.max(48, 96 - i * 9);
-                        return (
-                            <div class="os-skill-row" data-usage={usage}>
-                                <div class="os-skill-meta">
-                                    <span class="os-skill-name">{s.label}</span>
-                                    <span class="os-skill-value">{usage}%</span>
-                                </div>
-                                <div class="os-skill-bar"><span style={`--w: ${usage}%`}></span></div>
-                                <p class="os-skill-stack">{s.value}</p>
+                    {about.skills.map((s) => (
+                        <div class="os-proc-row">
+                            <div class="os-proc-head">
+                                <span class="os-proc-dot" aria-hidden="true"></span>
+                                <span class="os-proc-name">{s.label}</span>
+                                <span class="os-proc-status">running</span>
                             </div>
-                        );
-                    })}
+                            <div class="os-proc-tags">
+                                {s.value.split(',').map((tag) => (
+                                    <span class="os-proc-tag">{tag.trim()}</span>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </article>
 
@@ -350,53 +351,58 @@ import { about } from '../data/site';
         backdrop-filter: blur(6px);
     }
 
-    /* Activity */
+    /* Activity — process list */
     .os-activity-body { display: grid; gap: 0.65rem; }
-    .os-skill-row {
+    .os-proc-row {
         padding: 0.6rem 0.75rem;
         border: 1px solid var(--border);
         border-radius: 0.6rem;
         background: color-mix(in srgb, var(--bg-muted) 50%, transparent);
     }
-    .os-skill-meta {
+    .os-proc-head {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.35rem;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
     }
-    .os-skill-name {
+    .os-proc-dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 9999px;
+        background: #28c840;
+        flex-shrink: 0;
+        box-shadow: 0 0 0 2px color-mix(in srgb, #28c840 25%, transparent);
+    }
+    .os-proc-name {
         font-size: 0.72rem;
         font-weight: 800;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
         color: var(--fg);
+        flex: 1;
     }
-    .os-skill-value {
+    .os-proc-status {
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--fg-subtle);
+        text-transform: lowercase;
+    }
+    .os-proc-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+    .os-proc-tag {
+        padding: 0.22rem 0.55rem;
+        border-radius: 0.4rem;
+        border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+        background: color-mix(in srgb, var(--surface) 90%, transparent);
         font-size: 0.66rem;
-        font-variant-numeric: tabular-nums;
-        font-weight: 700;
-        color: var(--accent);
-    }
-    .os-skill-bar {
-        height: 4px;
-        border-radius: 9999px;
-        background: var(--border);
-        overflow: hidden;
-        margin-bottom: 0.4rem;
-    }
-    .os-skill-bar span {
-        display: block;
-        height: 100%;
-        width: var(--w, 0);
-        background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--fg-muted)));
-        border-radius: 9999px;
-        transition: width 0.8s ease;
-    }
-    .os-skill-stack {
-        font-size: 0.72rem;
-        line-height: 1.45;
+        font-weight: 600;
         color: var(--fg-muted);
-        margin: 0;
+        line-height: 1.3;
     }
 
     /* Stickies */

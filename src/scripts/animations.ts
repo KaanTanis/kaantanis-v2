@@ -86,20 +86,19 @@ function aboutOsScene() {
             });
         });
 
-        // Animate skill bars when activity window enters
-        const skillBars = gsap.utils.toArray<HTMLElement>('.os-skill-bar span');
-        skillBars.forEach((bar) => {
-            const targetWidth = (bar.style as CSSStyleDeclaration).getPropertyValue('--w') || '100%';
-            gsap.fromTo(
-                bar,
-                { width: '0%' },
-                {
-                    width: targetWidth,
-                    duration: 1.1,
-                    ease: 'power2.out',
-                    scrollTrigger: { trigger: bar, start: 'top 92%' },
-                },
-            );
+        // Stagger process tags in activity window
+        const procRows = gsap.utils.toArray<HTMLElement>('.os-proc-row');
+        procRows.forEach((row) => {
+            const tags = row.querySelectorAll<HTMLElement>('.os-proc-tag');
+            gsap.from(tags, {
+                opacity: 0,
+                y: 6,
+                scale: 0.96,
+                duration: 0.45,
+                ease: 'power3.out',
+                stagger: 0.03,
+                scrollTrigger: { trigger: row, start: 'top 92%' },
+            });
         });
 
         // Subtle parallax to finder photos
@@ -366,12 +365,6 @@ export function initAnimations() {
             .forEach((el) => {
                 el.style.opacity = '1';
                 el.style.transform = 'none';
-            });
-        document
-            .querySelectorAll<HTMLElement>('.os-skill-bar span')
-            .forEach((bar) => {
-                const w = (bar.style as CSSStyleDeclaration).getPropertyValue('--w') || '100%';
-                bar.style.width = w;
             });
         return;
     }
