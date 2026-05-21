@@ -44,14 +44,20 @@ import { steps } from '../data/site';
         ))}
     </div>
 
-    <aside class="slab-rail" aria-hidden="true" data-slab-rail>
+    <nav class="slab-rail" aria-label="Süreç aşamaları" data-slab-rail>
         {steps.map((step, i) => (
-            <button type="button" class="slab-rail-item" data-rail={i} aria-label={`${step.n} ${step.title}`}>
+            <button
+                type="button"
+                class="slab-rail-item"
+                data-rail={i}
+                aria-label={`${step.kicker}: ${step.title}`}
+                aria-current="false"
+            >
                 <span class="slab-rail-num">{step.n}</span>
                 <span class="slab-rail-label">{step.kicker}</span>
             </button>
         ))}
-    </aside>
+    </nav>
 </section>
 
 <style>

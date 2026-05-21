@@ -419,6 +419,16 @@ import { about } from '../data/site';
         100% { transform: translateX(-50%); }
     }
 
+    @media (prefers-reduced-motion: reduce) {
+        .os-marquee-track {
+            animation: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            white-space: normal;
+            padding: 0.25rem 1rem;
+        }
+    }
+
     /* Em underline (scoped to display heading only) */
     .os-display em {
         font-style: normal;

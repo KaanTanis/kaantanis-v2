@@ -64,8 +64,8 @@
     --bg-elevated: #25104a;
     --fg: #fef9c3;
     --fg-strong: #ffffff;
-    --fg-muted: #f0abfc;
-    --fg-subtle: #a855f7;
+    --fg-muted: #e9d5ff;
+    --fg-subtle: #c084fc;
     --border: #ff00ff33;
     --border-strong: #ff00ff66;
     --accent: #fde047;
@@ -278,8 +278,15 @@ b {
     border-color: var(--accent);
 }
 
+.chip:has(input:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
 .chip input {
     position: absolute;
+    width: 1px;
+    height: 1px;
     opacity: 0;
     pointer-events: none;
 }

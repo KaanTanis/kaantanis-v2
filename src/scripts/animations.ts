@@ -216,7 +216,9 @@ function processSlabScene() {
                 end: 'bottom 45%',
                 onToggle: (self) => {
                     railItems.forEach((item, i) => {
-                        item.classList.toggle('is-active', i === index && self.isActive);
+                        const active = i === index && self.isActive;
+                        item.classList.toggle('is-active', active);
+                        item.setAttribute('aria-current', active ? 'step' : 'false');
                     });
                 },
             });

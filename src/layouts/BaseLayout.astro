@@ -10,6 +10,7 @@ interface Props {
 const title = Astro.props.title ?? site.title;
 const description = Astro.props.description ?? site.description;
 const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(site.ogImage, site.url).href;
 
 const jsonLd = {
     '@context': 'https://schema.org',
@@ -44,7 +45,7 @@ const jsonLd = {
             jobTitle: 'Software Developer & UI Designer',
             description: site.description,
             sameAs: site.sameAs,
-            image: `${site.url}/logo.svg`,
+            image: ogImage,
             worksFor: { '@id': `${site.url}/#organization` },
         },
         {
@@ -81,18 +82,20 @@ const jsonLd = {
         <meta property="og:url" content={canonical} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={`${site.url}/logo.svg`} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${site.name} — Software Developer & UI Designer`} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content={site.twitter} />
         <meta name="twitter:creator" content={site.twitter} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={`${site.url}/logo.svg`} />
+        <meta name="twitter:image" content={ogImage} />
 
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
-        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-Regular.ttf" crossorigin />
-        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-Bold.ttf" crossorigin />
+        <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-Medium.ttf" crossorigin />
         <link rel="preload" as="font" type="font/ttf" href="/fonts/gilroy/Gilroy-ExtraBold.ttf" crossorigin />
 
         <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
