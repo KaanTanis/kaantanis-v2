@@ -7,78 +7,30 @@ import { about } from '../data/site';
         <header class="about-intro">
             <span class="eyebrow reveal" data-reveal>{about.eyebrow}</span>
             <h2
-                class="display-section reveal mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+                class="display-section reveal mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem]"
                 data-reveal
                 data-reveal-delay="0.05"
                 set:html={about.title}
             />
-            <p class="about-lead reveal" data-reveal data-reveal-delay="0.1">
-                {about.lead}
-            </p>
         </header>
 
-        <div class="about-pillars reveal" data-reveal data-reveal-delay="0.14">
-            {about.pillars.map((pillar) => (
-                <article class="about-pillar">
-                    <span class="about-pillar-n" aria-hidden="true">{pillar.n}</span>
-                    <h3 class="about-pillar-title">{pillar.title}</h3>
-                    <p class="about-pillar-desc">{pillar.desc}</p>
-                </article>
-            ))}
+        <div class="about-prose rich reveal" data-reveal data-reveal-delay="0.1">
+            {about.body.map((paragraph) => <p set:html={paragraph} />)}
         </div>
-
-        <div class="about-chips reveal" data-reveal data-reveal-delay="0.2" aria-label="Öne çıkan teknolojiler">
-            {about.highlights.map((tag) => (
-                <span class="about-chip">{tag}</span>
-            ))}
-        </div>
-
-        <details class="about-details">
-            <summary class="about-details-trigger">Teknik detay</summary>
-            <div class="about-details-panel">
-                {about.skillsDetail.map((group) => (
-                    <div class="about-details-row">
-                        <span class="about-details-label">{group.label}</span>
-                        <span class="about-details-tags">{group.tags.join(' · ')}</span>
-                    </div>
-                ))}
-            </div>
-        </details>
     </div>
 </section>
 
 <style>
     .about-layout {
         display: grid;
-        gap: 2.5rem;
+        gap: 2rem;
+        max-width: 42rem;
     }
 
     @media (min-width: 900px) {
         .about-layout {
-            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-            grid-template-areas:
-                'intro pillars'
-                'chips chips'
-                'details details';
-            column-gap: 4rem;
-            row-gap: 2.75rem;
-            align-items: start;
-        }
-
-        .about-intro {
-            grid-area: intro;
-        }
-
-        .about-pillars {
-            grid-area: pillars;
-        }
-
-        .about-chips {
-            grid-area: chips;
-        }
-
-        .about-details {
-            grid-area: details;
+            max-width: 46rem;
+            gap: 2.25rem;
         }
     }
 
@@ -101,199 +53,17 @@ import { about } from '../data/site';
         border-radius: 9999px;
     }
 
-    .about-lead {
-        margin: 1.25rem 0 0;
-        max-width: 28rem;
-        font-size: 1.05rem;
-        line-height: 1.6;
-        font-weight: 600;
-        color: var(--fg-muted);
-    }
-
-    .about-pillars {
+    .about-prose {
         display: grid;
-        gap: 0.85rem;
-    }
-
-    @media (min-width: 640px) and (max-width: 899px) {
-        .about-pillars {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 1rem;
-        }
-    }
-
-    .about-pillar {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto auto;
-        column-gap: 0.85rem;
-        row-gap: 0.15rem;
-        padding: 1rem 0;
-        border-top: 1px solid var(--border);
-    }
-
-    @media (min-width: 900px) {
-        .about-pillar {
-            padding: 1.1rem 0 0;
-        }
-
-        .about-pillar:first-child {
-            padding-top: 0;
-            border-top: none;
-        }
-    }
-
-    .about-pillar-n {
-        grid-row: 1 / span 2;
-        font-size: 0.68rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        color: var(--fg-subtle);
-        padding-top: 0.15rem;
-    }
-
-    .about-pillar-title {
-        margin: 0;
+        gap: 1.25rem;
         font-size: 1rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: var(--fg);
-    }
-
-    .about-pillar-desc {
-        margin: 0;
-        grid-column: 2;
-        font-size: 0.88rem;
-        line-height: 1.45;
-        font-weight: 600;
+        line-height: 1.8;
         color: var(--fg-muted);
-    }
-
-    .about-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.45rem;
-        padding-top: 0.5rem;
-        border-top: 1px solid var(--border);
-    }
-
-    @media (min-width: 900px) {
-        .about-chips {
-            padding-top: 0;
-            border-top: none;
-        }
-    }
-
-    .about-chip {
-        padding: 0.4rem 0.75rem;
-        border-radius: 9999px;
-        border: 1px solid var(--border);
-        background: var(--bg-muted);
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-        color: var(--fg);
-        transition:
-            border-color 0.2s ease,
-            background-color 0.2s ease,
-            transform 0.2s ease;
-    }
-
-    .about-chip:hover {
-        border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-        background: color-mix(in srgb, var(--accent) 8%, var(--bg-muted));
-        transform: translateY(-1px);
-    }
-
-    .about-details {
-        border-top: 1px solid var(--border);
-        padding-top: 0.25rem;
-    }
-
-    .about-details-trigger {
-        list-style: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.65rem 0;
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--fg-subtle);
-        transition: color 0.2s ease;
-    }
-
-    .about-details-trigger::-webkit-details-marker {
-        display: none;
-    }
-
-    .about-details-trigger::after {
-        content: '+';
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: var(--fg);
-        transition: transform 0.25s ease;
-    }
-
-    .about-details[open] .about-details-trigger {
-        color: var(--fg);
-    }
-
-    .about-details[open] .about-details-trigger::after {
-        content: '−';
-    }
-
-    .about-details-panel {
-        display: grid;
-        gap: 1rem;
-        padding: 0.5rem 0 0.25rem;
-        animation: aboutDetailsIn 0.35s ease;
-    }
-
-    @keyframes aboutDetailsIn {
-        from {
-            opacity: 0;
-            transform: translateY(-4px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .about-details-panel {
-            animation: none;
-        }
-    }
-
-    .about-details-row {
-        display: grid;
-        gap: 0.35rem;
     }
 
     @media (min-width: 640px) {
-        .about-details-row {
-            grid-template-columns: 6.5rem minmax(0, 1fr);
-            gap: 1rem;
-            align-items: baseline;
+        .about-prose {
+            font-size: 1.0625rem;
         }
-    }
-
-    .about-details-label {
-        font-size: 0.68rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--fg);
-    }
-
-    .about-details-tags {
-        font-size: 0.82rem;
-        line-height: 1.55;
-        font-weight: 500;
-        color: var(--fg-muted);
     }
 </style>

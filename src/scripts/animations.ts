@@ -71,23 +71,6 @@ function revealScene() {
 // =====================================================
 // ABOUT — Workspace OS scene
 // =====================================================
-function aboutScene() {
-    runScene('about', () => {
-        const chips = gsap.utils.toArray<HTMLElement>('.about-chip');
-        if (chips.length) {
-            gsap.from(chips, {
-                opacity: 0,
-                y: 10,
-                scale: 0.98,
-                duration: 0.5,
-                ease: 'power3.out',
-                stagger: 0.025,
-                scrollTrigger: { trigger: '.about-chips', start: 'top 88%' },
-            });
-        }
-    });
-}
-
 // =====================================================
 // PROCESS — Slab stack scene (no pin, scroll-driven indicators)
 // =====================================================
@@ -329,7 +312,7 @@ export function initAnimations() {
     if (prefersReducedMotion()) {
         document
             .querySelectorAll<HTMLElement>(
-                '[data-reveal], .about-chip, .slab, [data-bubble], .lab-footer, .lab-footer-shell',
+                '[data-reveal], .slab, [data-bubble], .lab-footer, .lab-footer-shell',
             )
             .forEach((el) => {
                 el.style.opacity = '1';
@@ -340,7 +323,6 @@ export function initAnimations() {
 
     heroSafeScene();
     revealScene();
-    aboutScene();
     processSlabScene();
     contactChatScene();
     chromeScene();

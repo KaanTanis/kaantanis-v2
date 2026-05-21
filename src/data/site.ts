@@ -31,47 +31,10 @@ export const hero = {
 export const about = {
     eyebrow: 'Hakkımda',
     title: 'Simple outside.<br/><em>Powerful</em> inside.',
-    lead: 'Full-stack geliştirici & arayüz tasarımcısı',
-    pillars: [
-        { n: '01', title: 'Ürün', desc: 'Strateji → tasarım → teslim' },
-        { n: '02', title: 'Stack', desc: 'Laravel · Go · Next · RN' },
-        { n: '03', title: 'Sistem', desc: 'Docker · K8s · Redis' },
-    ],
-    highlights: [
-        'Laravel',
-        'Livewire',
-        'Go',
-        'Astro',
-        'Vue',
-        'Tailwind',
-        'React Native',
-        'Expo',
-        'Docker',
-        'Nginx',
-        'Redis',
-        'Figma',
-        'Filament',
-        'Inertia',
-        'GSAP',
-        'Stripe',
-    ],
-    /** Açılır teknik detay — ana görünümde değil */
-    skillsDetail: [
-        {
-            label: 'Backend',
-            tags: ['Laravel', 'Livewire', 'Filament', 'Go', 'Inertia', 'REST', 'MySQL', 'PostgreSQL', 'Pest'],
-        },
-        {
-            label: 'Frontend',
-            tags: ['Vue', 'Svelte', 'Alpine', 'Tailwind', 'Astro', 'Vite', 'Blade', 'GSAP'],
-        },
-        { label: 'Mobil', tags: ['React Native', 'Expo', 'Firebase', 'Android', 'iOS'] },
-        {
-            label: 'DevOps',
-            tags: ['Docker', 'Nginx', 'Redis', 'Linux', 'PM2', 'ElasticSearch', 'Deployment'],
-        },
-        { label: 'UI/UX', tags: ['Figma', 'Wireframe', 'Design systems', 'Shadcn'] },
-        { label: 'Entegrasyon', tags: ['Stripe', 'Pusher', 'Socket.IO', 'Telegram', 'AWS'] },
+    body: [
+        'Modern teknolojilerle <strong>uçtan uca ürün geliştiren</strong>, sistemi kurup yöneten ve canlıya alma süreçlerini yürüten bir <strong>Full-Stack geliştiriciyim</strong>. Web sitesi ve mobil uygulama — ikisinde de aynı özeni taşırım.',
+        'Size <strong>işlevsel ve performanslı</strong> projeler sunarım: kullanıcı ekranda rahat eder, siz arka planda sürprizlerle uğraşmazsınız. Görünüm sade, işleyiş net; karmaşıklık yerine <strong>anlaşılır bir deneyim</strong> önceliğimdir.',
+        'Fikirden yayına kadar tek elden ilerleyebilirim; ekiple çalışırken de iletişimi kısa ve anlaşılır tutarım. Ölçüt her zaman aynı: işinize değer katan, uzun süre güvenle kullanabileceğiniz dijital ürünler.',
     ],
 } as const;
 
