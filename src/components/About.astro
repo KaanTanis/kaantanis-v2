@@ -2,211 +2,496 @@
 import { about } from '../data/site';
 ---
 
-<section id="about" class="scroll-mt-20 py-24 md:py-32 relative overflow-hidden">
-    <div class="about-orb about-orb-a" aria-hidden="true"></div>
-    <div class="about-orb about-orb-b" aria-hidden="true"></div>
+<section id="about" class="os-section scroll-mt-20 py-20 md:py-28 relative overflow-hidden">
+    <div class="os-bg-grid" aria-hidden="true"></div>
+    <div class="os-bg-glow os-bg-glow-a" aria-hidden="true"></div>
+    <div class="os-bg-glow os-bg-glow-b" aria-hidden="true"></div>
+
     <div class="container-site relative z-10">
-        <div class="grid items-start gap-12 md:grid-cols-12">
-            <div class="md:col-span-5 md:sticky md:top-24">
-                <span class="eyebrow reveal" data-reveal>{about.eyebrow}</span>
-                <h2
-                    class="display-section reveal mt-4 text-5xl sm:text-6xl lg:text-7xl"
-                    data-reveal
-                    data-reveal-delay="0.05"
-                    set:html={about.title}
-                />
-                <div class="about-marquee mt-10 reveal" data-reveal data-reveal-delay="0.1">
-                    <span>FULL-STACK</span>
-                    <span>•</span>
-                    <span>UI/UX</span>
-                    <span>•</span>
-                    <span>DEVOPS</span>
-                    <span>•</span>
-                    <span>PRODUCT THINKING</span>
-                </div>
+        <!-- OS Menubar -->
+        <div class="os-menubar reveal" data-reveal>
+            <div class="os-menubar-left">
+                <span class="os-logo" aria-hidden="true">◐</span>
+                <strong>about.kaan</strong>
+                <span class="os-menubar-item">Dosya</span>
+                <span class="os-menubar-item">Düzen</span>
+                <span class="os-menubar-item">Görünüm</span>
             </div>
+            <div class="os-menubar-right">
+                <span class="os-pill">{about.eyebrow}</span>
+                <span class="os-time" id="os-time">--:--</span>
+            </div>
+        </div>
 
-            <div class="md:col-span-7 grid gap-6">
-                <article class="about-card reveal" data-reveal data-reveal-delay="0.08">
-                    <div class="about-image-stack">
-                        <img src={about.images[0]} id="about_image_1" width="500" height="400" alt={about.eyebrow} class="about-main-image" loading="lazy" />
-                        <img src={about.images[1]} id="about_image_2" width="260" height="210" alt="" class="about-float-image about-float-left" loading="lazy" />
-                        <img src={about.images[2]} id="about_image_3" width="240" height="200" alt="" class="about-float-image about-float-right" loading="lazy" />
+        <!-- Workspace -->
+        <div class="os-workspace">
+            <!-- Terminal window -->
+            <article class="os-window os-window--terminal reveal" data-reveal data-reveal-delay="0.06">
+                <header class="os-titlebar">
+                    <span class="os-dot os-dot-red"></span>
+                    <span class="os-dot os-dot-yellow"></span>
+                    <span class="os-dot os-dot-green"></span>
+                    <span class="os-titlebar-name">terminal — about.sh</span>
+                </header>
+                <div class="os-window-body os-terminal-body">
+                    <div class="os-cmd-line">
+                        <span class="os-cmd-prompt">kaan@studio</span>
+                        <span class="os-cmd-arrow">~$</span>
+                        <span class="os-cmd-text">cat manifesto.md</span>
                     </div>
-                </article>
+                    <h2 class="os-display" set:html={about.title} />
+                    {about.paragraphs.map((p) => <p class="os-output rich" set:html={p} />)}
 
-                <article class="about-card rich reveal" data-reveal data-reveal-delay="0.12">
-                    {about.paragraphs.map((p) => <p set:html={p} />)}
-                </article>
+                    <div class="os-cmd-line mt-6">
+                        <span class="os-cmd-prompt">kaan@studio</span>
+                        <span class="os-cmd-arrow">~$</span>
+                        <span class="os-cmd-text">cat workstyle.md</span>
+                    </div>
+                    {about.bioParagraphs.map((p) => <p class="os-output rich" set:html={p} />)}
 
-                <article class="about-card rich reveal" data-reveal data-reveal-delay="0.16">
-                    {about.bioParagraphs.map((p) => <p set:html={p} />)}
-                </article>
-
-                <div class="grid gap-3 sm:grid-cols-2">
-                    {
-                        about.strengths.map((item, index) => (
-                            <div class="about-chip reveal" data-reveal data-reveal-delay={(0.2 + index * 0.03).toFixed(2)}>
-                                <span class="about-chip-dot" aria-hidden="true"></span>
-                                <span>{item}</span>
-                            </div>
-                        ))
-                    }
+                    <div class="os-cmd-line mt-4">
+                        <span class="os-cmd-prompt">kaan@studio</span>
+                        <span class="os-cmd-arrow">~$</span>
+                        <span class="os-cmd-cursor" aria-hidden="true"></span>
+                    </div>
                 </div>
+            </article>
 
-                <dl class="grid gap-3 md:grid-cols-2">
-                    {
-                        about.skills.map((s, index) => (
-                            <div class="about-skill reveal" data-reveal data-reveal-delay={(0.22 + index * 0.03).toFixed(2)}>
-                                <dt>{s.label}</dt>
-                                <dd>{s.value}</dd>
+            <!-- Finder gallery window -->
+            <article class="os-window os-window--finder reveal" data-reveal data-reveal-delay="0.12">
+                <header class="os-titlebar">
+                    <span class="os-dot os-dot-red"></span>
+                    <span class="os-dot os-dot-yellow"></span>
+                    <span class="os-dot os-dot-green"></span>
+                    <span class="os-titlebar-name">finder — /moments</span>
+                </header>
+                <div class="os-window-body os-finder-body">
+                    {about.images.map((img, i) => (
+                        <figure class="os-photo" id={`about_image_${i + 1}`}>
+                            <img src={img} alt={`Kaan Tanış moments ${i + 1}`} loading="lazy" />
+                            <figcaption>moment_0{i + 1}.jpg</figcaption>
+                        </figure>
+                    ))}
+                </div>
+            </article>
+
+            <!-- Activity monitor: skills -->
+            <article class="os-window os-window--activity reveal" data-reveal data-reveal-delay="0.16">
+                <header class="os-titlebar">
+                    <span class="os-dot os-dot-red"></span>
+                    <span class="os-dot os-dot-yellow"></span>
+                    <span class="os-dot os-dot-green"></span>
+                    <span class="os-titlebar-name">activity — skills.proc</span>
+                </header>
+                <div class="os-window-body os-activity-body">
+                    {about.skills.map((s, i) => {
+                        const usage = Math.max(48, 96 - i * 9);
+                        return (
+                            <div class="os-skill-row" data-usage={usage}>
+                                <div class="os-skill-meta">
+                                    <span class="os-skill-name">{s.label}</span>
+                                    <span class="os-skill-value">{usage}%</span>
+                                </div>
+                                <div class="os-skill-bar"><span style={`--w: ${usage}%`}></span></div>
+                                <p class="os-skill-stack">{s.value}</p>
                             </div>
-                        ))
-                    }
-                </dl>
+                        );
+                    })}
+                </div>
+            </article>
+
+            <!-- Stickies: strengths -->
+            <article class="os-window os-window--notes reveal" data-reveal data-reveal-delay="0.2">
+                <header class="os-titlebar">
+                    <span class="os-dot os-dot-red"></span>
+                    <span class="os-dot os-dot-yellow"></span>
+                    <span class="os-dot os-dot-green"></span>
+                    <span class="os-titlebar-name">stickies — strengths</span>
+                </header>
+                <div class="os-window-body os-notes-body">
+                    {about.strengths.map((item, i) => (
+                        <span class="os-note" style={`--tilt: ${i % 2 === 0 ? -1.5 : 1.5}deg`}>
+                            <span class="os-note-pin" aria-hidden="true"></span>
+                            <span>{item}</span>
+                        </span>
+                    ))}
+                </div>
+            </article>
+        </div>
+
+        <!-- Marquee ticker -->
+        <div class="os-marquee reveal" data-reveal data-reveal-delay="0.25">
+            <div class="os-marquee-track">
+                <span>FULL-STACK</span><em>●</em>
+                <span>UI / UX</span><em>●</em>
+                <span>DEVOPS</span><em>●</em>
+                <span>PRODUCT THINKING</span><em>●</em>
+                <span>SYSTEM DESIGN</span><em>●</em>
+                <span>LARAVEL · ASTRO · TAILWIND</span><em>●</em>
+                <span>DOCKER · NGINX · REDIS</span><em>●</em>
+                <span>FULL-STACK</span><em>●</em>
+                <span>UI / UX</span><em>●</em>
+                <span>DEVOPS</span><em>●</em>
+                <span>PRODUCT THINKING</span><em>●</em>
+                <span>SYSTEM DESIGN</span><em>●</em>
+                <span>LARAVEL · ASTRO · TAILWIND</span><em>●</em>
+                <span>DOCKER · NGINX · REDIS</span><em>●</em>
             </div>
         </div>
     </div>
 </section>
 
 <style>
-    .about-orb {
+    .os-section { isolation: isolate; }
+
+    .os-bg-grid {
         position: absolute;
-        border-radius: 9999px;
-        filter: blur(70px);
-        opacity: 0.25;
+        inset: 0;
+        background-image:
+            linear-gradient(to right, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
+            linear-gradient(to bottom, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px);
+        background-size: 32px 32px;
+        opacity: 0.18;
+        mask-image: radial-gradient(ellipse at top, black 0%, transparent 80%);
         pointer-events: none;
     }
-
-    .about-orb-a {
-        width: 24rem;
-        height: 24rem;
-        top: 8rem;
-        left: -10rem;
-        background: color-mix(in srgb, var(--accent) 40%, transparent);
-    }
-
-    .about-orb-b {
-        width: 28rem;
-        height: 28rem;
-        right: -12rem;
-        bottom: 0;
-        background: color-mix(in srgb, var(--fg) 22%, transparent);
-    }
-
-    .about-marquee {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow: hidden;
-        white-space: nowrap;
-        gap: 0.85rem;
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 0.16em;
-        color: var(--fg-subtle);
-    }
-
-    .about-card {
-        border: 1px solid var(--border);
-        border-radius: 1.5rem;
-        background: color-mix(in srgb, var(--surface) 84%, transparent);
-        box-shadow: var(--shadow-md);
-        padding: 1.25rem;
-        backdrop-filter: blur(16px);
-    }
-
-    .about-image-stack {
-        position: relative;
-        min-height: 18rem;
-    }
-
-    .about-main-image {
-        width: 100%;
-        aspect-ratio: 16 / 10;
-        border-radius: 1.2rem;
-        object-fit: cover;
-    }
-
-    .about-float-image {
+    .os-bg-glow {
         position: absolute;
-        width: clamp(7rem, 20vw, 10rem);
-        aspect-ratio: 4 / 3;
-        border-radius: 1rem;
-        border: 1px solid var(--border);
-        object-fit: cover;
-        box-shadow: var(--shadow-sm);
+        border-radius: 9999px;
+        filter: blur(90px);
+        opacity: 0.22;
+        pointer-events: none;
+    }
+    .os-bg-glow-a {
+        width: 26rem; height: 26rem;
+        top: 3rem; left: -8rem;
+        background: color-mix(in srgb, var(--accent) 55%, transparent);
+    }
+    .os-bg-glow-b {
+        width: 30rem; height: 30rem;
+        bottom: 0; right: -10rem;
+        background: color-mix(in srgb, var(--fg) 28%, transparent);
     }
 
-    .about-float-left {
-        left: -0.25rem;
-        bottom: -1.2rem;
-        transform: rotate(-7deg);
-    }
-
-    .about-float-right {
-        right: -0.25rem;
-        top: -1rem;
-        transform: rotate(8deg);
-    }
-
-    .about-chip {
+    /* Menubar */
+    .os-menubar {
         display: flex;
         align-items: center;
-        gap: 0.625rem;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.55rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 0.85rem;
+        background: color-mix(in srgb, var(--surface) 86%, transparent);
+        backdrop-filter: blur(20px);
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--fg-muted);
+        margin-bottom: 1rem;
+    }
+    .os-menubar-left, .os-menubar-right { display: flex; align-items: center; gap: 0.85rem; }
+    .os-menubar-left strong { color: var(--fg-strong); font-weight: 800; }
+    .os-logo { font-size: 1rem; color: var(--accent); }
+    .os-menubar-item { color: var(--fg-subtle); }
+    .os-pill {
+        padding: 0.22rem 0.6rem;
         border-radius: 9999px;
         border: 1px solid var(--border);
-        background: color-mix(in srgb, var(--surface) 82%, transparent);
-        padding: 0.75rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 700;
+        background: var(--bg-muted);
+        font-size: 0.64rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+    .os-time { font-variant-numeric: tabular-nums; color: var(--fg); }
+
+    /* Workspace grid */
+    .os-workspace {
+        display: grid;
+        gap: 1.1rem;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        grid-template-areas:
+            'terminal finder'
+            'terminal activity'
+            'notes notes';
+    }
+    .os-window--terminal { grid-area: terminal; }
+    .os-window--finder { grid-area: finder; }
+    .os-window--activity { grid-area: activity; }
+    .os-window--notes { grid-area: notes; }
+
+    @media (max-width: 900px) {
+        .os-workspace {
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-areas:
+                'terminal'
+                'finder'
+                'activity'
+                'notes';
+        }
     }
 
-    .about-chip-dot {
+    .os-window {
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        background: color-mix(in srgb, var(--surface) 86%, transparent);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    .os-titlebar {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 0.85rem;
+        border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+        background: color-mix(in srgb, var(--bg-muted) 70%, transparent);
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--fg-muted);
+    }
+    .os-dot {
+        width: 0.7rem; height: 0.7rem;
+        border-radius: 9999px;
+        flex-shrink: 0;
+    }
+    .os-dot-red { background: #ff5f57; }
+    .os-dot-yellow { background: #febc2e; }
+    .os-dot-green { background: #28c840; }
+    .os-titlebar-name {
+        margin-left: 0.5rem;
+        flex: 1;
+        text-align: center;
+        letter-spacing: 0.06em;
+    }
+    .os-window-body { padding: 1.1rem 1.2rem; flex: 1; }
+
+    /* Terminal */
+    .os-terminal-body {
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 0.86rem;
+        line-height: 1.6;
+        color: var(--fg);
+    }
+    .os-cmd-line {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        margin-bottom: 0.6rem;
+    }
+    .os-cmd-prompt { color: var(--accent); font-weight: 700; }
+    .os-cmd-arrow { color: var(--fg-subtle); }
+    .os-cmd-text { color: var(--fg); font-weight: 600; }
+    .os-cmd-cursor {
+        display: inline-block;
+        width: 0.5rem;
+        height: 1rem;
+        background: var(--fg);
+        animation: osBlink 1s steps(2) infinite;
+    }
+    @keyframes osBlink { 50% { opacity: 0; } }
+
+    .os-display {
+        font-family: var(--font-sans);
+        font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        font-weight: 800;
+        margin: 0.4rem 0 1rem;
+        color: var(--fg);
+    }
+    .os-output {
+        font-family: var(--font-sans);
+        font-size: 0.96rem;
+        line-height: 1.7;
+        color: var(--fg-muted);
+        margin: 0 0 1rem;
+    }
+    .os-output:last-child { margin-bottom: 0; }
+
+    /* Finder */
+    .os-finder-body {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.55rem;
+    }
+    .os-photo {
+        margin: 0;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        border: 1px solid var(--border);
+        background: var(--bg-muted);
+    }
+    .os-photo img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.6s ease;
+    }
+    .os-photo:hover img { transform: scale(1.08); }
+    .os-photo figcaption {
+        position: absolute;
+        left: 0.4rem;
+        right: 0.4rem;
+        bottom: 0.4rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: lowercase;
+        background: color-mix(in srgb, var(--bg) 80%, transparent);
+        color: var(--fg-muted);
+        border-radius: 0.4rem;
+        backdrop-filter: blur(6px);
+    }
+
+    /* Activity */
+    .os-activity-body { display: grid; gap: 0.65rem; }
+    .os-skill-row {
+        padding: 0.6rem 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 0.6rem;
+        background: color-mix(in srgb, var(--bg-muted) 50%, transparent);
+    }
+    .os-skill-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.35rem;
+    }
+    .os-skill-name {
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--fg);
+    }
+    .os-skill-value {
+        font-size: 0.66rem;
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        color: var(--accent);
+    }
+    .os-skill-bar {
+        height: 4px;
+        border-radius: 9999px;
+        background: var(--border);
+        overflow: hidden;
+        margin-bottom: 0.4rem;
+    }
+    .os-skill-bar span {
+        display: block;
+        height: 100%;
+        width: var(--w, 0);
+        background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--fg-muted)));
+        border-radius: 9999px;
+        transition: width 0.8s ease;
+    }
+    .os-skill-stack {
+        font-size: 0.72rem;
+        line-height: 1.45;
+        color: var(--fg-muted);
+        margin: 0;
+    }
+
+    /* Stickies */
+    .os-notes-body {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    .os-note {
+        position: relative;
+        padding: 0.7rem 0.9rem 0.7rem 1.4rem;
+        background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+        border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+        border-radius: 0.6rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--fg-strong);
+        box-shadow: var(--shadow-sm);
+        transform: rotate(var(--tilt, 0));
+        transition: transform 0.25s ease;
+    }
+    .os-note:hover { transform: rotate(0) translateY(-2px); }
+    .os-note-pin {
+        position: absolute;
+        left: 0.6rem;
+        top: 50%;
+        transform: translateY(-50%);
         width: 0.45rem;
         height: 0.45rem;
         border-radius: 9999px;
         background: var(--accent);
     }
 
-    .about-skill {
+    /* Marquee */
+    .os-marquee {
+        margin-top: 1.4rem;
+        overflow: hidden;
         border: 1px solid var(--border);
-        border-radius: 1rem;
-        background: color-mix(in srgb, var(--surface) 82%, transparent);
-        padding: 1rem;
+        border-radius: 0.75rem;
+        background: color-mix(in srgb, var(--surface) 84%, transparent);
+        padding: 0.55rem 0;
     }
-
-    .about-skill dt {
-        font-size: 0.68rem;
-        letter-spacing: 0.18em;
+    .os-marquee-track {
+        display: inline-flex;
+        gap: 1rem;
+        white-space: nowrap;
+        animation: osMarquee 30s linear infinite;
+        font-size: 0.72rem;
         font-weight: 800;
-        text-transform: uppercase;
+        letter-spacing: 0.18em;
         color: var(--fg-subtle);
-        margin-bottom: 0.35rem;
+        text-transform: uppercase;
+        padding-left: 1rem;
+    }
+    .os-marquee-track em {
+        font-style: normal;
+        color: var(--accent);
+    }
+    @keyframes osMarquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
     }
 
-    .about-skill dd {
-        font-size: 0.85rem;
-        font-weight: 600;
-        line-height: 1.45;
-        color: var(--fg-muted);
-    }
-
-    em {
+    /* Em underline (scoped to display heading only) */
+    .os-display em {
         font-style: normal;
         position: relative;
         white-space: nowrap;
     }
-
-    em::after {
+    .os-display em::after {
         content: '';
         position: absolute;
-        left: 0;
-        right: 0;
+        left: 0; right: 0;
         bottom: 0.06em;
         height: 0.18em;
         background: var(--accent);
-        opacity: 0.8;
+        opacity: 0.7;
         z-index: -1;
-        border-radius: 1rem;
+        border-radius: 9999px;
     }
 </style>
+
+<script>
+    function initOsTime() {
+        const el = document.getElementById('os-time');
+        if (!el) return;
+        const tick = () => {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            el.textContent = `${hh}:${mm}`;
+        };
+        tick();
+        setInterval(tick, 30000);
+    }
+    initOsTime();
+    document.addEventListener('astro:page-load', initOsTime);
+</script>

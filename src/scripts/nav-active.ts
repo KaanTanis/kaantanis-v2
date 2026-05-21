@@ -1,6 +1,11 @@
 const sectionIds = ['hero', 'about', 'process', 'contact'] as const;
 
 function setActive(id: string) {
+    const navShell = document.querySelector<HTMLElement>('.chrome-nav-shell');
+    if (navShell) {
+        navShell.dataset.lab = id !== 'hero' ? 'true' : 'false';
+    }
+
     document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]').forEach((link) => {
         link.dataset.active = link.dataset.navLink === `#${id}` ? 'true' : 'false';
     });

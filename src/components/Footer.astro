@@ -3,8 +3,8 @@ import Logo from './Logo.astro';
 import { site, hero } from '../data/site';
 ---
 
-<footer class="border-t border-[var(--border)] py-10">
-    <div class="container-site flex flex-col items-center justify-between gap-6 sm:flex-row">
+<footer class="lab-footer py-12">
+    <div class="container-site lab-footer-shell flex flex-col items-center justify-between gap-6 sm:flex-row">
         <div class="flex items-center gap-3">
             <a href="#hero" class="block size-9 text-[var(--fg)]" aria-label="Ana sayfa">
                 <Logo />
@@ -22,7 +22,22 @@ import { site, hero } from '../data/site';
             <a href={`mailto:${hero.email}`} class="hover:text-[var(--fg)]">E-posta</a>
         </div>
         <p class="text-center text-xs text-[var(--fg-subtle)] sm:text-right">
-            © {new Date().getFullYear()} · Designed & developed with <span aria-label="kalp">🫶</span>
+            © {new Date().getFullYear()} · Designed & developed with care
         </p>
     </div>
 </footer>
+
+<style>
+    .lab-footer {
+        position: relative;
+    }
+
+    .lab-footer-shell {
+        border: 1px solid var(--border);
+        border-radius: 1.25rem;
+        padding: 1rem 1.2rem;
+        background: color-mix(in srgb, var(--surface) 84%, transparent);
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(14px);
+    }
+</style>

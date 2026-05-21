@@ -16,47 +16,21 @@ function runScene(sceneId: string, runner: SceneRunner) {
     runner();
 }
 
+// =====================================================
+// HERO — original reference parity (LOCKED)
+// =====================================================
 function heroSafeScene() {
     runScene('hero', () => {
         const heroSection = document.querySelector('#hero');
         if (!heroSection) return;
 
         const playHeroAnimation = () => {
-            // Original site parity (speed + effect)
-            gsap.from('#designer', {
-                duration: 1,
-                x: -100,
-                opacity: 0,
-                ease: 'back',
-            });
-            gsap.from('#developer', {
-                duration: 1,
-                x: 100,
-                opacity: 0,
-                ease: 'back',
-            });
-            gsap.from('#designer_image', {
-                duration: 1,
-                y: -100,
-                opacity: 0,
-                ease: 'back',
-            });
-            gsap.from('#developer_image', {
-                duration: 1,
-                y: 100,
-                opacity: 0,
-                ease: 'back',
-            });
-            gsap.from('#hero_title_1', {
-                duration: 0.5,
-                opacity: 0,
-                delay: 0.2,
-            });
-            gsap.from('#hero_title_2', {
-                duration: 0.5,
-                opacity: 0,
-                delay: 0.5,
-            });
+            gsap.from('#designer', { duration: 1, x: -100, opacity: 0, ease: 'back' });
+            gsap.from('#developer', { duration: 1, x: 100, opacity: 0, ease: 'back' });
+            gsap.from('#designer_image', { duration: 1, y: -100, opacity: 0, ease: 'back' });
+            gsap.from('#developer_image', { duration: 1, y: 100, opacity: 0, ease: 'back' });
+            gsap.from('#hero_title_1', { duration: 0.5, opacity: 0, delay: 0.2 });
+            gsap.from('#hero_title_2', { duration: 0.5, opacity: 0, delay: 0.5 });
         };
 
         if ('IntersectionObserver' in window) {
@@ -76,6 +50,9 @@ function heroSafeScene() {
     });
 }
 
+// =====================================================
+// REVEAL — generic [data-reveal] entrance
+// =====================================================
 function revealScene() {
     const items = gsap.utils.toArray<HTMLElement>('[data-reveal]');
     items.forEach((el) => {
@@ -86,170 +63,270 @@ function revealScene() {
             duration: 0.9,
             ease: 'expo.out',
             delay,
-            scrollTrigger: {
-                trigger: el,
-                start: 'top 88%',
-            },
+            scrollTrigger: { trigger: el, start: 'top 88%' },
         });
     });
 }
 
-function aboutScene() {
+// =====================================================
+// ABOUT — Workspace OS scene
+// =====================================================
+function aboutOsScene() {
     runScene('about', () => {
-        const floatImages = gsap.utils.toArray<HTMLElement>('#about_image_1, #about_image_2, #about_image_3');
-        floatImages.forEach((img, index) => {
-            gsap.from(img, {
+        const windows = gsap.utils.toArray<HTMLElement>('.os-window');
+        windows.forEach((win, i) => {
+            gsap.from(win, {
                 opacity: 0,
-                y: 30 + index * 8,
-                rotate: index === 1 ? -6 : 6,
-                duration: 0.9,
-                ease: 'expo.out',
-                scrollTrigger: {
-                    trigger: img,
-                    start: 'top 90%',
-                },
+                y: 50,
+                scale: 0.97,
+                duration: 0.85,
+                ease: 'power3.out',
+                delay: i * 0.06,
+                scrollTrigger: { trigger: win, start: 'top 88%' },
             });
+        });
 
-            gsap.to(img, {
-                yPercent: index === 0 ? -4 : index === 1 ? 6 : -8,
-                rotate: index === 1 ? -10 : 10,
+        // Animate skill bars when activity window enters
+        const skillBars = gsap.utils.toArray<HTMLElement>('.os-skill-bar span');
+        skillBars.forEach((bar) => {
+            const targetWidth = (bar.style as CSSStyleDeclaration).getPropertyValue('--w') || '100%';
+            gsap.fromTo(
+                bar,
+                { width: '0%' },
+                {
+                    width: targetWidth,
+                    duration: 1.1,
+                    ease: 'power2.out',
+                    scrollTrigger: { trigger: bar, start: 'top 92%' },
+                },
+            );
+        });
+
+        // Subtle parallax to finder photos
+        const photos = gsap.utils.toArray<HTMLElement>('.os-photo');
+        photos.forEach((photo, i) => {
+            gsap.to(photo, {
+                y: i === 0 ? -8 : i === 1 ? 6 : -4,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: '#about',
                     start: 'top bottom',
                     end: 'bottom top',
-                    scrub: true,
+                    scrub: 1,
                 },
+            });
+        });
+
+        // Stickies tilt jitter on hover already in CSS; add entrance pop
+        const notes = gsap.utils.toArray<HTMLElement>('.os-note');
+        notes.forEach((note, i) => {
+            gsap.from(note, {
+                opacity: 0,
+                y: 16,
+                rotate: 0,
+                duration: 0.6,
+                delay: i * 0.06,
+                ease: 'power3.out',
+                scrollTrigger: { trigger: note, start: 'top 92%' },
             });
         });
     });
 }
 
-function processScene() {
+// =====================================================
+// PROCESS — Slab stack scene (no pin, scroll-driven indicators)
+// =====================================================
+function processSlabScene() {
     runScene('process', () => {
-        const scenes = gsap.utils.toArray<HTMLElement>('.process-scene');
-        const track = document.querySelector('.process-track');
-        const stage = document.querySelector('.process-stage');
-        const progressItems = gsap.utils.toArray<HTMLElement>('.process-progress-item');
+        const section = document.querySelector<HTMLElement>('#process');
+        const slabs = gsap.utils.toArray<HTMLElement>('.slab');
+        const railItems = gsap.utils.toArray<HTMLElement>('.slab-rail-item');
+        if (!section || slabs.length === 0) return;
 
-        if (!track || !stage || scenes.length === 0) return;
-
-        gsap.set(scenes, { autoAlpha: 0, y: 18, scale: 0.985 });
-        gsap.set(scenes[0], { autoAlpha: 1, y: 0, scale: 1 });
-        progressItems[0]?.classList.add('is-active');
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: track,
-                start: 'top top+=84',
-                end: 'bottom bottom',
-                pin: stage,
-                scrub: 1,
-                invalidateOnRefresh: true,
-                onUpdate: (self) => {
-                    const idx = Math.min(scenes.length - 1, Math.floor(self.progress * scenes.length * 0.999));
-                    progressItems.forEach((item, i) => {
-                        item.classList.toggle('is-active', i <= idx);
-                    });
-                },
+        // Section enter: reveal rail
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top 60%',
+            end: 'bottom top+=100',
+            onToggle: (self) => {
+                section.dataset.railVisible = self.isActive ? 'true' : 'false';
             },
         });
 
-        for (let i = 1; i < scenes.length; i += 1) {
-            tl.to(
-                scenes[i - 1],
-                {
-                    autoAlpha: 0,
-                    y: -16,
-                    scale: 0.986,
-                    duration: 0.55,
-                    ease: 'power2.out',
-                },
-                i - 0.1,
-            ).to(
-                scenes[i],
-                {
-                    autoAlpha: 1,
-                    y: 0,
-                    scale: 1,
-                    duration: 0.55,
-                    ease: 'power2.out',
-                },
-                i - 0.03,
-            );
-        }
+        slabs.forEach((slab, index) => {
+            const numeralWrap = slab.querySelector<HTMLElement>('[data-slab-numeral]');
+            const frame = slab.querySelector<HTMLElement>('[data-slab-frame]');
+            const title = slab.querySelector<HTMLElement>('.slab-title');
+            const text = slab.querySelector<HTMLElement>('.slab-text');
+            const tag = slab.querySelector<HTMLElement>('.slab-tag');
 
-        scenes.forEach((scene, index) => {
-            const media = scene.querySelector<HTMLElement>('.scene-media img');
-            const copy = scene.querySelector<HTMLElement>('.scene-copy');
-
-            if (media) {
-                gsap.fromTo(
-                    media,
-                    { scale: 1.08 },
-                    {
-                        scale: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: track,
-                            start: `${index * 33}% top`,
-                            end: `${(index + 1) * 33}% top`,
-                            scrub: true,
-                        },
-                    },
-                );
+            // Slab entry
+            if (numeralWrap) {
+                gsap.from(numeralWrap, {
+                    opacity: 0,
+                    x: -60,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: { trigger: slab, start: 'top 70%' },
+                });
+            }
+            if (frame) {
+                gsap.from(frame, {
+                    opacity: 0,
+                    y: 40,
+                    scale: 0.96,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: { trigger: slab, start: 'top 70%' },
+                });
+            }
+            if (title) {
+                gsap.from(title, {
+                    opacity: 0,
+                    y: 28,
+                    duration: 0.7,
+                    delay: 0.1,
+                    ease: 'power3.out',
+                    scrollTrigger: { trigger: slab, start: 'top 70%' },
+                });
+            }
+            if (text) {
+                gsap.from(text, {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.7,
+                    delay: 0.18,
+                    ease: 'power3.out',
+                    scrollTrigger: { trigger: slab, start: 'top 70%' },
+                });
+            }
+            if (tag) {
+                gsap.from(tag, {
+                    opacity: 0,
+                    y: 14,
+                    duration: 0.6,
+                    delay: 0.25,
+                    ease: 'power3.out',
+                    scrollTrigger: { trigger: slab, start: 'top 70%' },
+                });
             }
 
-            if (copy) {
-                gsap.from(copy, {
-                    opacity: 0,
-                    y: 18,
-                    duration: 0.55,
-                    ease: 'power2.out',
+            // Numeral scrub parallax
+            if (numeralWrap) {
+                gsap.to(numeralWrap, {
+                    yPercent: -10,
+                    ease: 'none',
                     scrollTrigger: {
-                        trigger: scene,
-                        start: 'top 75%',
+                        trigger: slab,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1,
                     },
                 });
             }
+
+            // Active rail item while slab in viewport
+            ScrollTrigger.create({
+                trigger: slab,
+                start: 'top 55%',
+                end: 'bottom 45%',
+                onToggle: (self) => {
+                    railItems.forEach((item, i) => {
+                        item.classList.toggle('is-active', i === index && self.isActive);
+                    });
+                },
+            });
+        });
+
+        // Rail click to jump
+        railItems.forEach((item, i) => {
+            item.addEventListener('click', () => {
+                const target = slabs[i];
+                if (!target) return;
+                const top = target.getBoundingClientRect().top + window.scrollY - 60;
+                window.scrollTo({ top, behavior: 'smooth' });
+            });
         });
     });
 }
 
-function contactScene() {
+// =====================================================
+// CONTACT — Chat conversation cascade
+// =====================================================
+function contactChatScene() {
     runScene('contact', () => {
-        gsap.from('#contactTitle', {
-            opacity: 0,
-            y: 28,
-            duration: 0.9,
-            ease: 'expo.out',
-            scrollTrigger: {
-                trigger: '#contactTitle',
-                start: 'top 88%',
+        const stream = document.querySelector<HTMLElement>('[data-chat-stream]');
+        if (!stream) return;
+
+        const bubbles = stream.querySelectorAll<HTMLElement>('[data-bubble]');
+        gsap.set(bubbles, { opacity: 0, y: 16, scale: 0.97 });
+
+        ScrollTrigger.create({
+            trigger: stream,
+            start: 'top 80%',
+            once: true,
+            onEnter: () => {
+                gsap.to(bubbles, {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.6,
+                    ease: 'power3.out',
+                    stagger: 0.08,
+                });
             },
         });
 
-        gsap.from('#contact-form .input, #contact-form .chip, #contact-submit', {
+        // Stats counters subtle pop
+        const stats = gsap.utils.toArray<HTMLElement>('.chat-stat');
+        stats.forEach((stat, i) => {
+            gsap.from(stat, {
+                opacity: 0,
+                y: 18,
+                duration: 0.55,
+                delay: i * 0.08,
+                ease: 'power3.out',
+                scrollTrigger: { trigger: stat, start: 'top 92%' },
+            });
+        });
+    });
+}
+
+// =====================================================
+// CHROME — Nav / Dock / Footer entrance
+// =====================================================
+function chromeScene() {
+    const navShell = document.querySelector<HTMLElement>('.chrome-nav-shell');
+    const dock = document.getElementById('mobile-dock');
+    const footer = document.querySelector('.lab-footer-shell');
+
+    if (navShell) {
+        gsap.from(navShell, { y: -18, opacity: 0, duration: 0.6, ease: 'power2.out' });
+    }
+    if (dock) {
+        gsap.from(dock, { y: 18, opacity: 0, duration: 0.55, ease: 'power2.out' });
+    }
+    if (footer) {
+        gsap.from(footer, {
             opacity: 0,
             y: 20,
-            duration: 0.45,
-            stagger: 0.05,
+            duration: 0.65,
             ease: 'power2.out',
-            scrollTrigger: {
-                trigger: '#contact-form',
-                start: 'top 86%',
-            },
+            scrollTrigger: { trigger: footer, start: 'top 92%' },
         });
-    });
+    }
 }
 
+// =====================================================
+// MAGNETIC BUTTONS
+// =====================================================
 function interactionScene() {
     if (prefersReducedMotion()) return;
-    const targets = document.querySelectorAll<HTMLElement>('.btn-primary');
+    const targets = document.querySelectorAll<HTMLElement>('.btn-primary, .chat-send');
     targets.forEach((btn) => {
         if (btn.dataset.magnetic) return;
         btn.dataset.magnetic = '1';
-        const strength = 10;
+        const strength = 8;
 
         const onMove = (e: MouseEvent) => {
             const rect = btn.getBoundingClientRect();
@@ -284,18 +361,27 @@ export function initAnimations() {
     clearScenes();
 
     if (prefersReducedMotion()) {
-        document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-        });
+        document
+            .querySelectorAll<HTMLElement>('[data-reveal], .os-window, .slab, [data-bubble]')
+            .forEach((el) => {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+        document
+            .querySelectorAll<HTMLElement>('.os-skill-bar span')
+            .forEach((bar) => {
+                const w = (bar.style as CSSStyleDeclaration).getPropertyValue('--w') || '100%';
+                bar.style.width = w;
+            });
         return;
     }
 
     heroSafeScene();
     revealScene();
-    aboutScene();
-    processScene();
-    contactScene();
+    aboutOsScene();
+    processSlabScene();
+    contactChatScene();
+    chromeScene();
     interactionScene();
     requestAnimationFrame(() => ScrollTrigger.refresh());
 }

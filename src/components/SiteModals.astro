@@ -2,7 +2,7 @@
 import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
 ---
 
-<dialog id="privacy-modal" class="site-modal">
+<dialog id="privacy-modal" class="site-modal lab-modal">
     <div class="site-modal-box prose-modal">
         <h2 class="text-xl font-bold">Gizlilik Politikası</h2>
         <div class="mt-4 space-y-3 text-sm text-[var(--fg-muted)]" set:html={privacyPolicyHtml} />
@@ -12,7 +12,7 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
     </div>
 </dialog>
 
-<dialog id="cookie-modal" class="site-modal">
+<dialog id="cookie-modal" class="site-modal lab-modal">
     <div class="site-modal-box prose-modal">
         <h2 class="text-xl font-bold">Çerezler</h2>
         <div class="mt-4 space-y-3 text-sm text-[var(--fg-muted)]" set:html={cookieNoticeHtml} />
@@ -24,7 +24,7 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
 
 <div
     id="cookie-consent"
-    class="cookie-banner fixed bottom-0 left-0 right-0 z-50 hidden border-t border-[var(--border)] bg-[var(--surface)] p-4 shadow-[var(--shadow)] sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-md sm:rounded-2xl sm:border"
+    class="cookie-banner fixed bottom-0 left-0 right-0 z-50 hidden border-t border-[var(--border)] bg-[var(--surface)] p-4 shadow-[var(--shadow-md)] sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-md sm:rounded-2xl sm:border"
     role="dialog"
     aria-label="Çerez bildirimi"
 >
@@ -51,13 +51,20 @@ import { privacyPolicyHtml, cookieNoticeHtml } from '../data/site';
         background: rgb(0 0 0 / 0.55);
         backdrop-filter: blur(4px);
     }
+
+    .lab-modal::backdrop {
+        background: rgb(0 0 0 / 0.62);
+        backdrop-filter: blur(6px);
+    }
+
     .site-modal-box {
-        background: var(--bg);
+        background: color-mix(in srgb, var(--bg) 86%, transparent);
         color: var(--fg);
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
         padding: 2rem;
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(14px);
     }
 </style>
 

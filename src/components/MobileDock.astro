@@ -41,9 +41,24 @@ const icons: Record<string, string> = {
 </nav>
 
 <style>
+    #mobile-dock {
+        overflow: clip;
+    }
+
+    #mobile-dock::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(circle at top, color-mix(in srgb, var(--accent) 20%, transparent), transparent 60%);
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
     .dock-item[data-active='true'] {
-        background: var(--accent);
+        background: color-mix(in srgb, var(--accent) 90%, transparent);
         color: var(--accent-fg);
+        transform: translateY(-1px);
     }
     .dock-item:active {
         transform: scale(0.92);
