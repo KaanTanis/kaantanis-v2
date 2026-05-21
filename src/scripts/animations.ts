@@ -101,21 +101,6 @@ function aboutOsScene() {
             });
         });
 
-        // Subtle parallax to finder photos
-        const photos = gsap.utils.toArray<HTMLElement>('.os-photo');
-        photos.forEach((photo, i) => {
-            gsap.to(photo, {
-                y: i === 0 ? -8 : i === 1 ? 6 : -4,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '#about',
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: 1,
-                },
-            });
-        });
-
         // Stickies tilt jitter on hover already in CSS; add entrance pop
         const notes = gsap.utils.toArray<HTMLElement>('.os-note');
         notes.forEach((note, i) => {
@@ -297,7 +282,7 @@ function contactChatScene() {
 function chromeScene() {
     const navShell = document.querySelector<HTMLElement>('.chrome-nav-shell');
     const dock = document.getElementById('mobile-dock');
-    const footer = document.querySelector('.lab-footer-shell');
+    const footer = document.querySelector<HTMLElement>('.lab-footer');
 
     if (navShell) {
         gsap.from(navShell, { y: -18, opacity: 0, duration: 0.6, ease: 'power2.out' });
@@ -306,12 +291,18 @@ function chromeScene() {
         gsap.from(dock, { y: 18, opacity: 0, duration: 0.55, ease: 'power2.out' });
     }
     if (footer) {
+        // immediateRender: false — footer görünür kalır, scroll'da fade-in oynar
         gsap.from(footer, {
             opacity: 0,
-            y: 20,
-            duration: 0.65,
+            y: 16,
+            duration: 0.55,
             ease: 'power2.out',
-            scrollTrigger: { trigger: footer, start: 'top 92%' },
+            immediateRender: false,
+            scrollTrigger: {
+                trigger: footer,
+                start: 'top bottom-=32',
+                once: true,
+            },
         });
     }
 }
@@ -354,6 +345,9 @@ function interactionScene() {
 function clearScenes() {
     sceneCleanups.splice(0).forEach((fn) => fn());
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    gsap.set('.lab-footer, .lab-footer-shell, .chrome-nav-shell, #mobile-dock', {
+        clearProps: 'opacity,transform,y',
+    });
 }
 
 export function initAnimations() {
@@ -361,7 +355,9 @@ export function initAnimations() {
 
     if (prefersReducedMotion()) {
         document
-            .querySelectorAll<HTMLElement>('[data-reveal], .os-window, .slab, [data-bubble]')
+            .querySelectorAll<HTMLElement>(
+                '[data-reveal], .os-window, .slab, [data-bubble], .lab-footer, .lab-footer-shell',
+            )
             .forEach((el) => {
                 el.style.opacity = '1';
                 el.style.transform = 'none';

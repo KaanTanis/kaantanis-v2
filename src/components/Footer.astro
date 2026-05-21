@@ -3,7 +3,7 @@ import Logo from './Logo.astro';
 import { site, hero } from '../data/site';
 ---
 
-<footer class="lab-footer py-12">
+<footer class="lab-footer py-12 pb-24 md:pb-12">
     <div class="container-site lab-footer-shell flex flex-col items-center justify-between gap-6 sm:flex-row">
         <div class="flex items-center gap-3">
             <a href="#hero" class="block size-9 text-[var(--fg)]" aria-label="Ana sayfa">
@@ -21,9 +21,12 @@ import { site, hero } from '../data/site';
             <span class="text-[var(--border-strong)]">·</span>
             <a href={`mailto:${hero.email}`} class="hover:text-[var(--fg)]">E-posta</a>
         </div>
-        <p class="text-center text-xs text-[var(--fg-subtle)] sm:text-right">
-            © {new Date().getFullYear()} · Designed & developed with care
-        </p>
+        <div class="footer-credit text-center text-xs text-[var(--fg-subtle)] sm:text-right">
+            <p class="footer-credit-line">Designed & developed by</p>
+            <p class="footer-credit-line footer-credit-name">
+                {site.name} with <span aria-hidden="true">🫶</span>
+            </p>
+        </div>
     </div>
 </footer>
 
@@ -39,5 +42,15 @@ import { site, hero } from '../data/site';
         background: color-mix(in srgb, var(--surface) 84%, transparent);
         box-shadow: var(--shadow-sm);
         backdrop-filter: blur(14px);
+    }
+
+    .footer-credit {
+        display: grid;
+        gap: 0.15rem;
+        line-height: 1.35;
+    }
+    .footer-credit-name {
+        font-weight: 800;
+        color: var(--fg-muted);
     }
 </style>

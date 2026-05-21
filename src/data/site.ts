@@ -19,8 +19,8 @@ export const site = {
 export const hero = {
     title: 'Designer',
     title2: 'Developer',
-    image: '/assets/img/designer.jpg',
-    image2: '/assets/img/developer.jpg',
+    image: '/assets/img/designer.webp',
+    image2: '/assets/img/developer.webp',
     github: 'KaanTanis',
     whatsapp: '+90 (544) 237 3323',
     whatsappLink: '905442373323',
@@ -45,13 +45,99 @@ export const about = {
         'DevOps ve sistem operasyonları',
     ],
     skills: [
-        { label: 'Backend', value: 'Laravel, Livewire, REST API, WebSocket, MySQL, PostgreSQL, SQLite' },
-        { label: 'Frontend', value: 'Tailwind CSS, InertiaJS, Vue, Svelte, Alpine.js' },
-        { label: 'DevOps & Sistem', value: 'Docker, Redis, Nginx, Linux (Ubuntu), ElasticSearch, Supervisor' },
-        { label: 'UI/UX', value: 'Figma (Prototip ve Tasarım), Tailwind ile responsive UI' },
-        { label: 'Diğer', value: 'Server yönetimi, deployment süreçleri, performans optimizasyonu, socket sistemleri' },
+        {
+            label: 'Backend',
+            tags: [
+                'Laravel',
+                'Livewire',
+                'Filament',
+                'Inertia (Laravel)',
+                'Go',
+                'Fiber',
+                'Chi',
+                'Templ',
+                'REST API',
+                'WebSocket',
+                'Laravel Reverb',
+                'Sanctum',
+                'MySQL',
+                'PostgreSQL',
+                'SQLite',
+                'Laravel Scout',
+                'Typesense',
+                'Spatie Media Library',
+                'Firebase (PHP SDK)',
+                'Pest',
+            ],
+        },
+        {
+            label: 'Frontend',
+            tags: [
+                'Vue 3',
+                'Inertia.js',
+                'Alpine.js',
+                'Svelte',
+                'Tailwind CSS 4',
+                'Astro',
+                'Vite',
+                'GSAP',
+                'Blade',
+                'Livewire UI',
+            ],
+        },
+        {
+            label: 'Mobil',
+            tags: [
+                'React Native',
+                'Expo',
+                'React Navigation',
+                'Firebase Messaging',
+                'React Native Maps',
+                'Android',
+                'iOS',
+            ],
+        },
+        {
+            label: 'DevOps & Sistem',
+            tags: [
+                'Docker',
+                'Redis',
+                'Nginx',
+                'Linux (Ubuntu)',
+                'ElasticSearch',
+                'Supervisor',
+                'PM2',
+                'AWS S3',
+                'Deployment',
+                'Server yönetimi',
+            ],
+        },
+        {
+            label: 'UI/UX',
+            tags: [
+                'Figma',
+                'Prototip & wireframe',
+                'Filament UI',
+                'Responsive UI',
+                'Design systems',
+                'TipTap editor UI',
+            ],
+        },
+        {
+            label: 'Entegrasyon',
+            tags: [
+                'Stripe',
+                'Laravel Cashier',
+                'Pusher',
+                'Laravel Echo',
+                'AWS SDK',
+                'Node.js',
+                'Express',
+                'Telegram webhook',
+                'Socket.IO',
+            ],
+        },
     ],
-    images: ['/assets/img/m3.jpg', '/assets/img/m2.png', '/assets/img/m1.jpg'],
 } as const;
 
 export const steps = [
@@ -61,7 +147,7 @@ export const steps = [
         title: 'Strateji & Yol Haritası',
         content:
             'İlk toplantıda <strong>hedefleriniz ve istekleriniz</strong> doğrultusunda detaylı bir analiz yapılır. Rakip analizi, pazar araştırması ve hedef kitlenin belirlenmesi bu aşamada tamamlanır. Projenin <strong>kapsamı ve stratejik yol haritası</strong> çıkarılır.',
-        image: '/assets/img/1.jpg',
+        image: '/assets/img/strateji.webp',
     },
     {
         n: '02',
@@ -69,7 +155,7 @@ export const steps = [
         title: 'Taslak & Prototip',
         content:
             'Proje için bir <strong>taslak veya wireframe</strong> hazırlanır ve sizinle paylaşılır. Görsel tasarım unsurları üzerinde geri bildirimler alınarak <strong>iterasyonlar</strong> yapılır. Nihai prototip onaylanmadan önce gerekli düzenlemeler tamamlanır.',
-        image: '/assets/img/2.jpg',
+        image: '/assets/img/prototip.webp',
     },
     {
         n: '03',
@@ -77,7 +163,7 @@ export const steps = [
         title: 'Geliştirme & Teslim',
         content:
             'Onaylanan prototip üzerinden proje geliştirilir. Teknik gereksinimler ve işlevsellikler tamamlanır. Test aşaması gerçekleştirilir ve <strong>proje teslim edilir</strong>. Teslim sonrası <strong>destek ve bakım</strong> seçenekleri sunulur.',
-        image: '/assets/img/3.jpg',
+        image: '/assets/img/gelistirme.webp',
     },
 ] as const;
 

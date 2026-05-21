@@ -13,9 +13,6 @@ import { about } from '../data/site';
             <div class="os-menubar-left">
                 <span class="os-logo" aria-hidden="true">◐</span>
                 <strong>about.kaan</strong>
-                <span class="os-menubar-item">Dosya</span>
-                <span class="os-menubar-item">Düzen</span>
-                <span class="os-menubar-item">Görünüm</span>
             </div>
             <div class="os-menubar-right">
                 <span class="os-pill">{about.eyebrow}</span>
@@ -57,26 +54,8 @@ import { about } from '../data/site';
                 </div>
             </article>
 
-            <!-- Finder gallery window -->
-            <article class="os-window os-window--finder reveal" data-reveal data-reveal-delay="0.12">
-                <header class="os-titlebar">
-                    <span class="os-dot os-dot-red"></span>
-                    <span class="os-dot os-dot-yellow"></span>
-                    <span class="os-dot os-dot-green"></span>
-                    <span class="os-titlebar-name">finder — /moments</span>
-                </header>
-                <div class="os-window-body os-finder-body">
-                    {about.images.map((img, i) => (
-                        <figure class="os-photo" id={`about_image_${i + 1}`}>
-                            <img src={img} alt={`Kaan Tanış moments ${i + 1}`} loading="lazy" />
-                            <figcaption>moment_0{i + 1}.jpg</figcaption>
-                        </figure>
-                    ))}
-                </div>
-            </article>
-
             <!-- Activity monitor: skills -->
-            <article class="os-window os-window--activity reveal" data-reveal data-reveal-delay="0.16">
+            <article class="os-window os-window--activity reveal" data-reveal data-reveal-delay="0.12">
                 <header class="os-titlebar">
                     <span class="os-dot os-dot-red"></span>
                     <span class="os-dot os-dot-yellow"></span>
@@ -92,8 +71,8 @@ import { about } from '../data/site';
                                 <span class="os-proc-status">running</span>
                             </div>
                             <div class="os-proc-tags">
-                                {s.value.split(',').map((tag) => (
-                                    <span class="os-proc-tag">{tag.trim()}</span>
+                                {s.tags.map((tag) => (
+                                    <span class="os-proc-tag">{tag}</span>
                                 ))}
                             </div>
                         </div>
@@ -128,14 +107,18 @@ import { about } from '../data/site';
                 <span>DEVOPS</span><em>●</em>
                 <span>PRODUCT THINKING</span><em>●</em>
                 <span>SYSTEM DESIGN</span><em>●</em>
-                <span>LARAVEL · ASTRO · TAILWIND</span><em>●</em>
+                <span>LARAVEL · GO · ASTRO</span><em>●</em>
+                <span>VUE · LIVEWIRE · FILAMENT</span><em>●</em>
+                <span>REACT NATIVE · EXPO</span><em>●</em>
                 <span>DOCKER · NGINX · REDIS</span><em>●</em>
                 <span>FULL-STACK</span><em>●</em>
                 <span>UI / UX</span><em>●</em>
                 <span>DEVOPS</span><em>●</em>
                 <span>PRODUCT THINKING</span><em>●</em>
                 <span>SYSTEM DESIGN</span><em>●</em>
-                <span>LARAVEL · ASTRO · TAILWIND</span><em>●</em>
+                <span>LARAVEL · GO · ASTRO</span><em>●</em>
+                <span>VUE · LIVEWIRE · FILAMENT</span><em>●</em>
+                <span>REACT NATIVE · EXPO</span><em>●</em>
                 <span>DOCKER · NGINX · REDIS</span><em>●</em>
             </div>
         </div>
@@ -209,15 +192,12 @@ import { about } from '../data/site';
     .os-workspace {
         display: grid;
         gap: 1.1rem;
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-        grid-template-rows: auto auto;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
         grid-template-areas:
-            'terminal finder'
             'terminal activity'
             'notes notes';
     }
     .os-window--terminal { grid-area: terminal; }
-    .os-window--finder { grid-area: finder; }
     .os-window--activity { grid-area: activity; }
     .os-window--notes { grid-area: notes; }
 
@@ -226,7 +206,6 @@ import { about } from '../data/site';
             grid-template-columns: minmax(0, 1fr);
             grid-template-areas:
                 'terminal'
-                'finder'
                 'activity'
                 'notes';
         }
@@ -313,51 +292,25 @@ import { about } from '../data/site';
     }
     .os-output:last-child { margin-bottom: 0; }
 
-    /* Finder */
-    .os-finder-body {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.55rem;
-    }
-    .os-photo {
-        margin: 0;
-        position: relative;
-        overflow: hidden;
-        border-radius: 0.75rem;
-        border: 1px solid var(--border);
-        background: var(--bg-muted);
-    }
-    .os-photo img {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.6s ease;
-    }
-    .os-photo:hover img { transform: scale(1.08); }
-    .os-photo figcaption {
-        position: absolute;
-        left: 0.4rem;
-        right: 0.4rem;
-        bottom: 0.4rem;
-        padding: 0.2rem 0.5rem;
-        font-size: 0.6rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: lowercase;
-        background: color-mix(in srgb, var(--bg) 80%, transparent);
-        color: var(--fg-muted);
-        border-radius: 0.4rem;
-        backdrop-filter: blur(6px);
-    }
-
     /* Activity — process list */
-    .os-activity-body { display: grid; gap: 0.65rem; }
+    .os-window--activity { min-height: 100%; }
+    .os-activity-body {
+        display: grid;
+        gap: 0.65rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media (max-width: 1100px) {
+        .os-activity-body { grid-template-columns: minmax(0, 1fr); }
+    }
     .os-proc-row {
-        padding: 0.6rem 0.75rem;
+        padding: 0.75rem 0.85rem;
         border: 1px solid var(--border);
         border-radius: 0.6rem;
         background: color-mix(in srgb, var(--bg-muted) 50%, transparent);
+    }
+    .os-window--activity .os-window-body {
+        padding: 1rem 1.1rem 1.15rem;
+        max-height: none;
     }
     .os-proc-head {
         display: flex;
