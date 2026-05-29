@@ -42,6 +42,42 @@ export const about = {
     ],
 } as const;
 
+export const techStack = {
+    label: 'Meraklılar için',
+    title: 'Kullandığım teknolojiler',
+    preview: ['Laravel', 'React', 'Docker', 'Linux'],
+    groups: [
+        {
+            label: 'Frontend',
+            items: ['TypeScript', 'React', 'Next.js', 'Astro', 'Tailwind CSS', 'Figma'],
+        },
+        {
+            label: 'Backend & API',
+            items: ['Laravel', 'Livewire', 'Node.js', 'PHP', 'Go', 'REST API', 'WebSocket'],
+        },
+        {
+            label: 'Veritabanı',
+            items: ['MySQL', 'PostgreSQL', 'SQLite', 'Redis', 'Elasticsearch'],
+        },
+        {
+            label: 'Altyapı & DevOps',
+            items: ['Linux', 'Nginx', 'Docker', 'Supervisor', 'Bash', 'Git', 'CI/CD'],
+        },
+        {
+            label: 'Operasyon & Güvenlik',
+            items: [
+                'Sunucu yönetimi',
+                'Deployment süreçleri',
+                'Performans optimizasyonu',
+                'Socket sistemleri',
+                'Sunucu güvenliği',
+                'DDoS koruması',
+                'Rate limiting',
+            ],
+        },
+    ],
+} as const;
+
 export const steps = [
     {
         n: '01',
