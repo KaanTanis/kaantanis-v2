@@ -49,7 +49,7 @@ export const techStack = {
     groups: [
         {
             label: 'Frontend',
-            items: ['TypeScript', 'React', 'Next.js', 'Astro', 'Tailwind CSS', 'Figma'],
+            items: ['TypeScript', 'React', 'Next.js', 'Astro', 'Vue', 'Svelte', 'Alpine.js', 'Tailwind CSS', 'Figma'],
         },
         {
             label: 'Backend & API',
@@ -61,7 +61,7 @@ export const techStack = {
         },
         {
             label: 'Altyapı & DevOps',
-            items: ['Linux', 'Nginx', 'Docker', 'Supervisor', 'Bash', 'Git', 'CI/CD'],
+            items: ['Linux', 'Nginx', 'Docker', 'Supervisor', 'Bash', 'Shell', 'Git', 'CI/CD'],
         },
         {
             label: 'Operasyon & Güvenlik',
